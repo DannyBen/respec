@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+usage() { 
+  printf "respec %s - rspec convenience wrapper\n\n" "$VERSION"
+  printf "Usage:\n"
+  printf "  respec                Run specs normally\n"
+  printf "  respec focus          Run specs tagged with :focus\n"
+  printf "  respec last [N]       Run specs modified in the last N minutes [10]\n"
+  printf "  respec continue       Run specs with unknown status\n"
+  printf "  respec -h, --help     Show this message\n"
+  printf "  respec -v, --version  Show version number\n"
+}
+
+print_in_color() {
+  local color="$1"
+  shift
+  if [[ -z ${NO_COLOR+x} ]]; then
+    printf "$color%b\e[0m\n" "$*";
+  else
+    printf "%b\n" "$*";
+  fi
+}
+
+red() { print_in_color "\e[31m" "$*"; }
+green() { print_in_color "\e[32m" "$*"; }
+yellow() { print_in_color "\e[33m" "$*"; }
+blue() { print_in_color "\e[34m" "$*"; }
+magenta() { print_in_color "\e[35m" "$*"; }
+cyan() { print_in_color "\e[36m" "$*"; }
+
+unpersist() {
+  rm -f "spec/persist.txt"
+}
+
+run() {
+  case "$1" in
+    "" )
+      unpersist
+      bundle exec rspec
+      ;;
+
+    f* )
+      magenta "respec: focus"
+      bundle exec rspec --tag focus
+      ;;
+
+    l* )
+      shift
+      m="${1:-10}"
+      magenta "respec: last $m minutes"
+      bundle exec rspec $((find -name '*_spec.rb' -mmin -$m | grep .) || echo "-tnothing")
+      ;;
+
+    c* )
+      magenta "respec: continue"
+      bundle exec rspec --next-failure --tag last_run_status:unknown
+      ;;
+
+
+    -h | --help )
+      usage
+      ;;
+
+    -v | --version )
+      echo "$VERSION"
+      ;;
+
+    * )
+      red "Unknown command: $1"
+      return 1
+      ;;
+
+  esac
+}
+
+VERSION="0.0.1"
+set -e
+run "$@"
