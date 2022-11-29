@@ -1,4 +1,4 @@
-# RSpec Convenience Wrapper
+# Respec - RSpec Convenience Wrapper
 
 ## Usage
 
