@@ -4,15 +4,16 @@ usage() {
   printf "respec %s - rspec convenience wrapper\n\n" "$VERSION"
   printf "Usage:\n"
   printf "  respec all            Run specs normally\n"
-  printf "  respec only SEARCH    Run specs on files matching SEARCH\n"
   printf "  respec focus          Run specs tagged with :focus\n"
+  printf "  respec only SEARCH    Run specs on files matching SEARCH\n"
+  printf "  respec except SEARCH  Run specs except on files matching SEARCH\n"
   printf "  respec last [N]       Run specs modified in the last N minutes [10]\n"
   printf "  respec errors         Run the last failed specs\n"
   printf "  respec continue       Continue from last run\n"
   printf "  respec reset          Delete the persistence file\n"
   printf "  respec -h, --help     Show this message\n"
   printf "  respec -v, --version  Show version number\n"
-  printf "\nPartial command names are acceptable"
+  printf "\nPartial command names are acceptable\n"
 }
 
 print_in_color() {
@@ -50,27 +51,36 @@ run() {
       bundle exec rspec
       ;;
 
+    f* )
+      banner "focus"
+      bundle exec rspec --tag focus
+      ;;
+
     o* )
       shift
       search="$1"
       [[ -z "$search" ]] && fail "this command requires an argument"
       banner "only *$search*"
-      bundle exec rspec --pattern "spec/**/*$search*_spec.rb"
+      bundle exec rspec $( (find . -name '*_spec.rb' -path "*$search*" | grep .) || echo "-tnothing")
       ;;
 
-    f* )
-      banner "focus"
-      bundle exec rspec --tag focus
+    ex* )
+      shift
+      search="$1"
+      [[ -z "$search" ]] && fail "this command requires an argument"
+      banner "except *$search*"
+      # bundle exec rspec $(find . -name '*_spec.rb' -not -path "*$search*")
+      bundle exec rspec $( (find . -name '*_spec.rb' -not -path "*$search*" | grep .) || echo "-tnothing")
       ;;
 
     l* )
       shift
       m="${1:-10}"
       banner "last $m minutes"
-      bundle exec rspec "$( (find . -name '*_spec.rb' -mmin -"$m" | grep .) || echo "-tnothing")"
+      bundle exec rspec $( (find . -name '*_spec.rb' -mmin -"$m" | grep .) || echo "-tnothing")
       ;;
 
-    e* )
+    er* )
       banner "failed specs"
       bundle exec rspec --next-failure
       ;;
