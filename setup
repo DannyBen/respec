@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Figure out if we need sudo or not
+sudo=''
+if [[ $EUID -ne 0 ]]; then
+  sudo='sudo'
+fi
+
+# Download script from Github
+echo "=== Saving executable to /usr/local/bin/respec"
+curl_command="curl -s https://raw.githubusercontent.com/DannyBen/respec/master/respec > /usr/local/bin/respec"
+$sudo bash -c "$curl_command"
+$sudo chmod a+x /usr/local/bin/respec
+
+# Verify
+if type respec > /dev/null; then
+  echo "=== Done. Type 'respec' for more info."
+else
+  echo "=== Setup failed."
+  exit 1
+fi
