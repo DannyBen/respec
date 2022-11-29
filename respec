@@ -61,6 +61,7 @@ run() {
       search="$1"
       [[ -z "$search" ]] && fail "this command requires an argument"
       banner "only *$search*"
+      # shellcheck disable=SC2046
       bundle exec rspec $( (find . -name '*_spec.rb' -path "*$search*" | grep .) || echo "-tnothing")
       ;;
 
@@ -69,7 +70,7 @@ run() {
       search="$1"
       [[ -z "$search" ]] && fail "this command requires an argument"
       banner "except *$search*"
-      # bundle exec rspec $(find . -name '*_spec.rb' -not -path "*$search*")
+      # shellcheck disable=SC2046
       bundle exec rspec $( (find . -name '*_spec.rb' -not -path "*$search*" | grep .) || echo "-tnothing")
       ;;
 
@@ -77,6 +78,7 @@ run() {
       shift
       m="${1:-10}"
       banner "last $m minutes"
+      # shellcheck disable=SC2046
       bundle exec rspec $( (find . -name '*_spec.rb' -mmin -"$m" | grep .) || echo "-tnothing")
       ;;
 
