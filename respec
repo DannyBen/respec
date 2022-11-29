@@ -4,9 +4,11 @@ usage() {
   printf "respec %s - rspec convenience wrapper\n\n" "$VERSION"
   printf "Usage:\n"
   printf "  respec                Run specs normally\n"
+  printf "  respec SEARCH         Run specs on a file matching SEARCH\n"
   printf "  respec focus          Run specs tagged with :focus\n"
   printf "  respec last [N]       Run specs modified in the last N minutes [10]\n"
-  printf "  respec continue       Run specs with unknown status\n"
+  printf "  respec cont           Continue from last run\n"
+  printf "  respec reset          Delete the persistence file\n"
   printf "  respec -h, --help     Show this message\n"
   printf "  respec -v, --version  Show version number\n"
 }
@@ -39,23 +41,27 @@ run() {
       bundle exec rspec
       ;;
 
-    f* )
+    f | focus )
       magenta "respec: focus"
       bundle exec rspec --tag focus
       ;;
 
-    l* )
+    l | last )
       shift
       m="${1:-10}"
       magenta "respec: last $m minutes"
       bundle exec rspec $((find -name '*_spec.rb' -mmin -$m | grep .) || echo "-tnothing")
       ;;
 
-    c* )
+    c | cont | continue )
       magenta "respec: continue"
       bundle exec rspec --next-failure --tag last_run_status:unknown
       ;;
 
+    r | reset )
+      magenta "respec: delete persistence file"
+      unpersist
+      ;;
 
     -h | --help )
       usage
@@ -66,13 +72,14 @@ run() {
       ;;
 
     * )
-      red "Unknown command: $1"
-      return 1
+      search="$1"
+      magenta "respec: files matching *$search*"
+      bundle exec rspec --pattern "spec/**/*$search*_spec.rb"
       ;;
 
   esac
 }
 
-VERSION="0.0.1"
+VERSION="0.0.2"
 set -e
 run "$@"
