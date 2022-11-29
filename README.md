@@ -5,7 +5,7 @@
 ```
 Usage:
   respec all            Run specs normally
-  respec only SEARCH    Run specs on a file matching SEARCH
+  respec only SEARCH    Run specs on files matching SEARCH
   respec focus          Run specs tagged with :focus
   respec last [N]       Run specs modified in the last N minutes [10]
   respec errors         Run the last failed specs

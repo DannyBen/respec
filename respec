@@ -4,7 +4,7 @@ usage() {
   printf "respec %s - rspec convenience wrapper\n\n" "$VERSION"
   printf "Usage:\n"
   printf "  respec all            Run specs normally\n"
-  printf "  respec only SEARCH    Run specs on a file matching SEARCH\n"
+  printf "  respec only SEARCH    Run specs on files matching SEARCH\n"
   printf "  respec focus          Run specs tagged with :focus\n"
   printf "  respec last [N]       Run specs modified in the last N minutes [10]\n"
   printf "  respec errors         Run the last failed specs\n"
