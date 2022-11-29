@@ -10,7 +10,7 @@
   respec last [N]       Run specs modified in the last N minutes [10]
   respec errors         Run the last failed specs
   respec continue       Continue from last run
-  respec reset          Delete the persistence file
+  respec reset          Delete the status file
   respec -h, --help     Show this message
   respec -v, --version  Show version number
 ```
@@ -22,13 +22,13 @@ Update the following files in your repository:
 ```ruby
 # spec/spec_helper.rb
 RSpec.configure do |config|
-  config.example_status_persistence_file_path = 'spec/persist.txt'
+  config.example_status_persistence_file_path = 'spec/status.txt'
 end
 ```
 
 ```bash
 # .gitignore
-spec/persist.txt
+spec/status.txt
 ```
 
 ```bash
