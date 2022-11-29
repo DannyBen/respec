@@ -3,14 +3,16 @@
 usage() { 
   printf "respec %s - rspec convenience wrapper\n\n" "$VERSION"
   printf "Usage:\n"
-  printf "  respec                Run specs normally\n"
-  printf "  respec SEARCH         Run specs on a file matching SEARCH\n"
+  printf "  respec all            Run specs normally\n"
+  printf "  respec only SEARCH    Run specs on a file matching SEARCH\n"
   printf "  respec focus          Run specs tagged with :focus\n"
   printf "  respec last [N]       Run specs modified in the last N minutes [10]\n"
-  printf "  respec cont           Continue from last run\n"
+  printf "  respec errors         Run the last failed specs\n"
+  printf "  respec continue       Continue from last run\n"
   printf "  respec reset          Delete the persistence file\n"
   printf "  respec -h, --help     Show this message\n"
   printf "  respec -v, --version  Show version number\n"
+  printf "\nPartial command names are acceptable"
 }
 
 print_in_color() {
@@ -30,36 +32,56 @@ blue() { print_in_color "\e[34m" "$*"; }
 magenta() { print_in_color "\e[35m" "$*"; }
 cyan() { print_in_color "\e[36m" "$*"; }
 
+banner() { magenta "respec: $*"; }
+fail() {
+  red "$*"
+  exit 1
+}
+
 unpersist() {
   rm -f "spec/persist.txt"
 }
 
 run() {
   case "$1" in
-    "" )
+    a* )
       unpersist
+      banner "all"
       bundle exec rspec
       ;;
 
-    f | focus )
-      magenta "respec: focus"
+    o* )
+      shift
+      search="$1"
+      [[ -z "$search" ]] && fail "this command requires an argument"
+      banner "only *$search*"
+      bundle exec rspec --pattern "spec/**/*$search*_spec.rb"
+      ;;
+
+    f* )
+      banner "focus"
       bundle exec rspec --tag focus
       ;;
 
-    l | last )
+    l* )
       shift
       m="${1:-10}"
-      magenta "respec: last $m minutes"
-      bundle exec rspec $((find -name '*_spec.rb' -mmin -$m | grep .) || echo "-tnothing")
+      banner "last $m minutes"
+      bundle exec rspec "$( (find . -name '*_spec.rb' -mmin -"$m" | grep .) || echo "-tnothing")"
       ;;
 
-    c | cont | continue )
-      magenta "respec: continue"
-      bundle exec rspec --next-failure --tag last_run_status:unknown
+    e* )
+      banner "failed specs"
+      bundle exec rspec --next-failure
       ;;
 
-    r | reset )
-      magenta "respec: delete persistence file"
+    c* )
+      banner "continue"
+      bundle exec rspec --tag last_run_status:unknown
+      ;;
+
+    r* )
+      banner "delete persistence file"
       unpersist
       ;;
 
@@ -72,9 +94,7 @@ run() {
       ;;
 
     * )
-      search="$1"
-      magenta "respec: files matching *$search*"
-      bundle exec rspec --pattern "spec/**/*$search*_spec.rb"
+      usage
       ;;
 
   esac
