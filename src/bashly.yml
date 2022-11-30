@@ -53,14 +53,14 @@ commands:
         validate: integer
         default: "10"
 
-  - name: errors
-    alias: [err, fails]
+  - name: fails
+    alias: [failures]
     help: Run the last failed specs
     filters: [spec_helper_config]
 
   - name: continue
     alias: [c, cont]
-    help: Continue from last run
+    help: Continue from where the last run stopped
     filters: [spec_helper_config]
 
   - name: reset

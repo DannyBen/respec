@@ -30,8 +30,8 @@ context "when there are no special environment requirements"
     approve "$cli focus"
     approve "$cli focus --help"
   
-  describe "errors"
-    approve "$cli errors --help"
+  describe "fails"
+    approve "$cli fails --help"
 
   describe "only"
     approve "$cli only --help"
@@ -56,8 +56,8 @@ context "when there are no special environment requirements"
 
 
 context "when there is no spec_helper"
-  describe "errors"
-    approve "$cli errors" "error_no_helper" || 0
+  describe "fails"
+    approve "$cli fails" "error_no_helper" || 0
 
   describe "continue"
     approve "$cli continue" "error_no_helper" || 0
@@ -70,8 +70,8 @@ context "when spec_helper exists but misconfigured"
   export RESPEC_HELPER_PATH="fixtures/misconfigured_spec_helper.rb"
   export RESPEC_STATUS_FILE="fixtures/spec/status.txt"
 
-  describe "errors"
-    approve "$cli errors" "error_misconfigured_helper" || 0
+  describe "fails"
+    approve "$cli fails" "error_misconfigured_helper" || 0
 
   describe "continue"
     approve "$cli continue" "error_misconfigured_helper" || 0
@@ -84,8 +84,8 @@ context "with a properly configured environment"
   export RESPEC_HELPER_PATH="fixtures/spec_helper.rb"
   export RESPEC_STATUS_FILE="fixtures/spec/status.txt"
 
-  describe "errors"
-    approve "$cli errors"
+  describe "fails"
+    approve "$cli fails"
 
   describe "continue"
     approve "$cli continue"

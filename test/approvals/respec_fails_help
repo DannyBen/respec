@@ -1,0 +1,11 @@
+respec fails - Run the last failed specs
+
+Alias: failures
+
+Usage:
+  respec fails
+  respec fails --help | -h
+
+Options:
+  --help, -h
+    Show this help

@@ -39,8 +39,8 @@ respec_usage() {
   echo "  only          Run specs on files matching a pattern"
   echo "  except        Run specs and exclude files matching a pattern"
   echo "  last          Run specs on files modified in the last N minutes"
-  echo "  errors        Run the last failed specs"
-  echo "  continue      Continue from last run"
+  echo "  fails         Run the last failed specs"
+  echo "  continue      Continue from where the last run stopped"
   echo "  reset         Delete the status file"
   echo "  watch         Run specs marked with :focus when any *.rb file changes"
   echo "  completions   Echo completions function"
@@ -274,23 +274,23 @@ respec_last_usage() {
 }
 
 # :command.usage
-respec_errors_usage() {
+respec_fails_usage() {
   if [[ -n $long_usage ]]; then
-    printf "respec errors - Run the last failed specs\n"
+    printf "respec fails - Run the last failed specs\n"
     echo
 
   else
-    printf "respec errors - Run the last failed specs\n"
+    printf "respec fails - Run the last failed specs\n"
     echo
 
   fi
 
-  printf "Alias: err, fails\n"
+  printf "Alias: failures\n"
   echo
 
   printf "Usage:\n"
-  printf "  respec errors\n"
-  printf "  respec errors --help | -h\n"
+  printf "  respec fails\n"
+  printf "  respec fails --help | -h\n"
   echo
 
   # :command.long_usage
@@ -308,11 +308,11 @@ respec_errors_usage() {
 # :command.usage
 respec_continue_usage() {
   if [[ -n $long_usage ]]; then
-    printf "respec continue - Continue from last run\n"
+    printf "respec continue - Continue from where the last run stopped\n"
     echo
 
   else
-    printf "respec continue - Continue from last run\n"
+    printf "respec continue - Continue from where the last run stopped\n"
     echo
 
   fi
@@ -595,15 +595,15 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
   echo $'      ;;'
   echo $''
+  echo $'    \'failures\'*)'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      ;;'
+  echo $''
   echo $'    \'continue\'*)'
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'except\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
-  echo $'      ;;'
-  echo $''
-  echo $'    \'errors\'*)'
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
   echo $'      ;;'
   echo $''
@@ -636,10 +636,6 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    \'all\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
-  echo $'      ;;'
-  echo $''
-  echo $'    \'err\'*)'
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
   echo $'      ;;'
   echo $''
@@ -676,7 +672,7 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    *)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --version -h -v a all c completions cont continue err errors ex except f fails focus l last o only r reset w watch")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --version -h -v a all c completions cont continue ex except f fails failures focus l last o only r reset w watch")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'  esac'
@@ -746,8 +742,8 @@ respec_last_command() {
 }
 
 # :command.function
-respec_errors_command() {
-  # src/errors_command.sh
+respec_fails_command() {
+  # src/fails_command.sh
   banner "failed specs"
   run_rspec --next-failure
 
@@ -860,10 +856,10 @@ parse_requirements() {
     shift $#
     ;;
 
-  errors | err | fails )
-    action="errors"
+  fails | failures )
+    action="fails"
     shift
-    respec_errors_parse_requirements "$@"
+    respec_fails_parse_requirements "$@"
     shift $#
     ;;
 
@@ -1190,13 +1186,13 @@ respec_last_parse_requirements() {
 }
 
 # :command.parse_requirements
-respec_errors_parse_requirements() {
+respec_fails_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
   --help | -h )
     long_usage=yes
-    respec_errors_usage
+    respec_fails_usage
     exit
     ;;
 
@@ -1208,7 +1204,7 @@ respec_errors_parse_requirements() {
   done
 
   # :command.command_filter
-  action="errors"
+  action="fails"
 
   # :command.parse_requirements_while
   while [[ $# -gt 0 ]]; do
@@ -1502,12 +1498,12 @@ run() {
       respec_last_command
     fi
 
-  elif [[ $action == "errors" ]]; then
+  elif [[ $action == "fails" ]]; then
     if [[ ${args[--help]:-} ]]; then
       long_usage=yes
-      respec_errors_usage
+      respec_fails_usage
     else
-      respec_errors_command
+      respec_fails_command
     fi
 
   elif [[ $action == "continue" ]]; then
