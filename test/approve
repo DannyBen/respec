@@ -108,7 +108,7 @@ context "with a properly configured environment"
 
 context "when there are no specs recently modified"
   describe "last"
-    # this does not work on vagrant, it is here for CI only
+    # this touch does not work on vagrant, it is here for CI only
     touch -d "2 hours ago" fixtures/spec/*.rb
     approve "$cli last 1" "respec_last_no_changes"
 
