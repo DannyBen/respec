@@ -105,7 +105,7 @@ onerror() {
   fail "Caller: $(caller)"
 }
 
-set -e
+# set -e
 trap 'onexit' EXIT
 trap 'onerror' ERR
 
