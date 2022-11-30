@@ -1,5 +1,8 @@
 # Respec - RSpec Convenience Wrapper
 
+![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
+[![Test](https://github.com/DannyBen/respec/actions/workflows/test.yml/badge.svg)](https://github.com/DannyBen/respec/actions/workflows/test.yml)
+
 ### Installing using the setup script
 
 This setup script will download the respec executable to `/usr/local/bin/` and
