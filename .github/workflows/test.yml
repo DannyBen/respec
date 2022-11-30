@@ -12,8 +12,10 @@ jobs:
       uses: actions/checkout@v2
     - name: Run shellcheck tests
       run: shellcheck respec setup
-    - name: Install filewatcher
-      run: gem install filewatcher-cli
+    - name: Install filewatcher dummy
+      run: |
+        echo -e "#!/usr/bin/env bash\necho 'filewatcher-stub'"" | sudo tee "/usr/local/bin/filewatcher" > /dev/null
+        sudo chmod +x /usr/local/bin/filewatcher
     - name: Run approval tests
       run: test/approve
 
