@@ -14,32 +14,32 @@ jobs:
       run: shellcheck respec setup
     - name: Install filewatcher dummy
       run: |
-        echo -e "#!/usr/bin/env bash\necho 'filewatcher-stub'"" | sudo tee "/usr/local/bin/filewatcher" > /dev/null
+        echo -e "#!/usr/bin/env bash\necho 'filewatcher-stub'" | sudo tee "/usr/local/bin/filewatcher" > /dev/null
         sudo chmod +x /usr/local/bin/filewatcher
     - name: Run approval tests
       run: test/approve
 
-  ubuntu_setup:
-    name: Setup on Ubuntu
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Run setup
-      run: ./setup
-    - name: Test setup artifacts
-      run: test/setup_artifacts
+  # ubuntu_setup:
+  #   name: Setup on Ubuntu
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v2
+  #   - name: Run setup
+  #     run: ./setup
+  #   - name: Test setup artifacts
+  #     run: test/setup_artifacts
 
-  macos_setup:
-    name: Setup on macOS
-    runs-on: macos-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Upgrade the outdated bash
-      run: brew install bash
-    - name: Run setup
-      run: ./setup
-    - name: Test setup artifacts
-      run: test/setup_artifacts
+  # macos_setup:
+  #   name: Setup on macOS
+  #   runs-on: macos-latest
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v2
+  #   - name: Upgrade the outdated bash
+  #     run: brew install bash
+  #   - name: Run setup
+  #     run: ./setup
+  #   - name: Test setup artifacts
+  #     run: test/setup_artifacts
 
