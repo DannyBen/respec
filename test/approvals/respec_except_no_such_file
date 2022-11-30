@@ -1,2 +1,1 @@
-[35mrespec: except *no-such-file*[0m
-[stubbed] $ rspec ./fixtures/spec/config_spec.rb ./fixtures/spec/content_spec.rb ./fixtures/spec/library_spec.rb
+$ [35mrespec: except ./fixtures/spec/config_spec.rb ./fixtures/spec/content_spec.rb ./fixtures/spec/library_spec.rb *no-such-file*[0m rspec [stubbed]

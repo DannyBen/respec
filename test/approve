@@ -103,10 +103,13 @@ context "with a properly configured environment"
 
   describe "except"
     approve "$cli except con"
-    approve "$cli except no-such-file"
+    # sort since the output is different in CI
+    approve "$cli except no-such-file | xargs -n1 | sort | xargs" "respec_except_no_such_file"
 
 context "when there are no specs recently modified"
   describe "last"
+    # this touch does not work on vagrant, it is here for CI only
+    touch -d "2 hours ago" fixtures/spec/*.rb
     approve "$cli last 1" "respec_last_no_changes"
 
 context "when there are specs recently modified"
