@@ -108,7 +108,7 @@ context "with a properly configured environment"
 
 context "when there are no specs recently modified"
   describe "last"
-    approve "$cli last 1" "respec_last_no_changes"
+    approve "$cli last 0" "respec_last_no_changes"
 
 context "when there are specs recently modified"
   touch "fixtures/spec/modified_spec.rb"
