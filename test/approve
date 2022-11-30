@@ -104,7 +104,7 @@ context "with a properly configured environment"
   describe "except"
     approve "$cli except con"
     # sort since the output is different in CI
-    approve "$cli except no-such-file |sort"
+    approve "$cli except no-such-file | xargs -n1 | sort | xargs" "respec_except_no_such_file"
 
 context "when there are no specs recently modified"
   describe "last"
