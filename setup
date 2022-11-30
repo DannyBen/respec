@@ -12,6 +12,24 @@ curl_command="curl -s https://raw.githubusercontent.com/DannyBen/respec/master/r
 $sudo bash -c "$curl_command"
 $sudo chmod a+x /usr/local/bin/respec
 
+# Install completions
+if [[ -d "/usr/share/bash-completion/completions" ]]; then
+  compdir="/usr/share/bash-completion/completions"
+elif [[ -d "/usr/local/etc/bash_completion.d" ]]; then
+  compdir="/usr/local/etc/bash_completion.d"
+else
+  compdir=''
+fi
+
+if [[ -n $compdir ]]; then
+  echo "=== Installing autocompletions to $compdir"
+  echo "eval \"\$(respec completions)\"" | $sudo tee "${compdir}/respec" > /dev/null
+else
+  echo "=== Completion script was not installed"
+  echo "    To install it manually add this to your startup script:"
+  echo "    eval \"\$(respec completions)\""
+fi
+
 # Verify
 if type respec > /dev/null; then
   echo "=== Done. Type 'respec' for more info."

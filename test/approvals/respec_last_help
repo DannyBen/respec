@@ -1,0 +1,16 @@
+respec last - Run specs on files modified in the last N minutes
+
+Alias: l
+
+Usage:
+  respec last [MIN]
+  respec last --help | -h
+
+Options:
+  --help, -h
+    Show this help
+
+Arguments:
+  MIN
+    Number of minutes
+    Default: 10

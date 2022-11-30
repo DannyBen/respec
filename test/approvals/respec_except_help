@@ -1,0 +1,15 @@
+respec except - Run specs and exclude files matching a pattern
+
+Alias: ex
+
+Usage:
+  respec except SEARCH
+  respec except --help | -h
+
+Options:
+  --help, -h
+    Show this help
+
+Arguments:
+  SEARCH
+    Partial filename

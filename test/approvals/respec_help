@@ -1,0 +1,42 @@
+respec - RSpec Convenience Wrapper
+
+Usage:
+  respec COMMAND
+  respec [COMMAND] --help | -h
+  respec --version | -v
+
+Commands:
+  all           Run full specs
+  focus         Run specs tagged with :focus
+  only          Run specs on files matching a pattern
+  except        Run specs and exclude files matching a pattern
+  last          Run specs on files modified in the last N minutes
+  errors        Run the last failed specs
+  continue      Continue from last run
+  reset         Delete the status file
+  watch         Run specs marked with :focus when any *.rb file changes
+  completions   Echo completions function
+
+Options:
+  --help, -h
+    Show this help
+
+  --version, -v
+    Show version number
+
+Environment Variables:
+  RESPEC_STATUS_FILE
+    Where to store the rspec status file
+    Default: spec/status.txt
+
+  RESPEC_HELPER_PATH
+    The location of the spec_helper.rb file
+    Default: spec/spec_helper.rb
+
+  RESPEC_RSPEC_COMMAND
+    The command for running rspec
+    Default: bundle exec rspec
+
+  RESPEC_FILEWATCHER_COMMAND
+    The command for running filewatcher
+    Default: filewatcher

@@ -1,5 +1,23 @@
 # Respec - RSpec Convenience Wrapper
 
+### Installing using the setup script
+
+This setup script will download the respec executable to `/usr/local/bin/` and
+install an autocomplete script in the bash completions directory.
+
+```shell
+$ curl -Ls get.dannyb.co/respec/setup | bash
+```
+
+Feel free to inspect the [setup script](setup) before running.
+
+
+### Installing manually
+
+Download the [respec](respec) script to `/usr/local/bin/` or anywhere in your
+`PATH`, and make it executable.
+
+
 ## Usage
 
 ```

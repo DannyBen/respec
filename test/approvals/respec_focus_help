@@ -1,0 +1,11 @@
+respec focus - Run specs tagged with :focus
+
+Alias: f
+
+Usage:
+  respec focus
+  respec focus --help | -h
+
+Options:
+  --help, -h
+    Show this help

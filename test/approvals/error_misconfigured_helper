@@ -1,0 +1,9 @@
+This command requires configuration in these files:
+
+[35m# fixtures/misconfigured_spec_helper.rb[0m
+RSpec.configure do |config|
+  config.example_status_persistence_file_path = 'fixtures/spec/status.txt'
+end
+
+[35m# .gitignore[0m
+fixtures/spec/status.txt

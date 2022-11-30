@@ -1,0 +1,2 @@
+[35mrespec: watch *.rb > respec focus[0m
+[stubbed] $ filewatcher **/*.rb clear ; respec focus

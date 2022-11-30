@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+
+usage() { 
+  printf "respec %s - rspec convenience wrapper\n\n" "$VERSION"
+  printf "Usage:\n"
+  printf "  respec all            Run specs normally\n"
+  printf "  respec focus          Run specs tagged with :focus\n"
+  printf "  respec only SEARCH    Run specs on files matching SEARCH\n"
+  printf "  respec except SEARCH  Run specs except on files matching SEARCH\n"
+  printf "  respec last [N]       Run specs modified in the last N minutes [10]\n"
+  printf "  respec errors         Run the last failed specs\n"
+  printf "  respec continue       Continue from last run\n"
+  printf "  respec reset          Delete the status file\n"
+  printf "  respec -h, --help     Show this message\n"
+  printf "  respec -v, --version  Show version number\n"
+  printf "\nPartial command names are acceptable\n"
+}
+
+print_in_color() {
+  local color="$1"
+  shift
+  if [[ -z ${NO_COLOR+x} ]]; then
+    printf "$color%b\e[0m\n" "$*";
+  else
+    printf "%b\n" "$*";
+  fi
+}
+
+red() { print_in_color "\e[31m" "$*"; }
+green() { print_in_color "\e[32m" "$*"; }
+yellow() { print_in_color "\e[33m" "$*"; }
+blue() { print_in_color "\e[34m" "$*"; }
+magenta() { print_in_color "\e[35m" "$*"; }
+cyan() { print_in_color "\e[36m" "$*"; }
+
+banner() { magenta "respec: $*"; }
+fail() {
+  red "$*"
+  exit 1
+}
+
+reset_status() {
+  rm -f "spec/status.txt"
+}
+
+run() {
+  case "$1" in
+    a* )
+      reset_status
+      banner "all"
+      bundle exec rspec
+      ;;
+
+    f* )
+      banner "focus"
+      bundle exec rspec --tag focus
+      ;;
+
+    o* )
+      shift
+      search="$1"
+      [[ -z "$search" ]] && fail "this command requires an argument"
+      banner "only *$search*"
+      # shellcheck disable=SC2046
+      bundle exec rspec $( (find . -name '*_spec.rb' -path "*$search*" | grep .) || echo "-tnothing")
+      ;;
+
+    ex* )
+      shift
+      search="$1"
+      [[ -z "$search" ]] && fail "this command requires an argument"
+      banner "except *$search*"
+      # shellcheck disable=SC2046
+      bundle exec rspec $( (find . -name '*_spec.rb' -not -path "*$search*" | grep .) || echo "-tnothing")
+      ;;
+
+    l* )
+      shift
+      m="${1:-10}"
+      banner "last $m minutes"
+      # shellcheck disable=SC2046
+      bundle exec rspec $( (find . -name '*_spec.rb' -mmin -"$m" | grep .) || echo "-tnothing")
+      ;;
+
+    er* )
+      banner "failed specs"
+      bundle exec rspec --next-failure
+      ;;
+
+    c* )
+      banner "continue"
+      bundle exec rspec --tag last_run_status:unknown
+      ;;
+
+    r* )
+      banner "delete status file"
+      reset_status
+      ;;
+
+    -h | --help )
+      usage
+      ;;
+
+    -v | --version )
+      echo "$VERSION"
+      ;;
+
+    * )
+      usage
+      ;;
+
+  esac
+}
+
+VERSION="0.0.2"
+set -e
+run "$@"

@@ -1,0 +1,11 @@
+respec reset - Delete the status file
+
+Alias: r
+
+Usage:
+  respec reset
+  respec reset --help | -h
+
+Options:
+  --help, -h
+    Show this help

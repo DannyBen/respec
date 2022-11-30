@@ -1,0 +1,15 @@
+respec only - Run specs on files matching a pattern
+
+Alias: o
+
+Usage:
+  respec only SEARCH
+  respec only --help | -h
+
+Options:
+  --help, -h
+    Show this help
+
+Arguments:
+  SEARCH
+    Partial filename

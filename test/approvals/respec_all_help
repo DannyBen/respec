@@ -1,0 +1,11 @@
+respec all - Run full specs
+
+Alias: a
+
+Usage:
+  respec all
+  respec all --help | -h
+
+Options:
+  --help, -h
+    Show this help
