@@ -24,16 +24,20 @@ Download the [respec](respec) script to `/usr/local/bin/` or anywhere in your
 ## Usage
 
 ```
-  respec all            Run specs normally
-  respec focus          Run specs tagged with :focus
-  respec only SEARCH    Run specs on files matching SEARCH
-  respec except SEARCH  Run specs except on files matching SEARCH
-  respec last [N]       Run specs modified in the last N minutes [10]
-  respec errors         Run the last failed specs
-  respec continue       Continue from last run
-  respec reset          Delete the status file
-  respec -h, --help     Show this message
-  respec -v, --version  Show version number
+Usage:
+  respec COMMAND
+
+Commands:
+  all           Run full specs
+  focus         Run specs tagged with :focus
+  only          Run specs on files matching a pattern
+  except        Run specs and exclude files matching a pattern
+  last          Run specs on files modified in the last N minutes
+  fails         Run the last failed specs
+  continue      Continue from where the last run stopped
+  reset         Delete the status file
+  watch         Run specs marked with :focus when any *.rb file changes
+  completions   Echo completions function
 ```
 
 ## Setup 
