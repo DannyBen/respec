@@ -7,11 +7,14 @@ source approvals.bash
 PATH="$PATH:../"
 cli=respec
 
-# Stub commands to avoid actually executing it
-export RESPEC_RSPEC_COMMAND='echo [stubbed] $ rspec'
-export RESPEC_FILEWATCHER_COMMAND='echo [stubbed] $ filewatcher'
+# Ensure clean stats
 unset RESPEC_HELPER_PATH
 unset RESPEC_STATUS_FILE
+
+# Stub some commands
+bundle()      { printf "[stubbed] \$ bundle %s" "$*"; }
+filewatcher() { printf "[stubbed] \$ filewatcher %s" "$*"; }
+export -f bundle filewatcher
 
 # Tests
 context "when there are no special environment requirements"
@@ -100,8 +103,10 @@ context "with a properly configured environment"
 
   describe "except"
     approve "$cli except con"
+    [[ -z $CI ]] && approve "$cli except no-such-file" "respec_except_no_such_file"
     # sort since the output is different in CI
-    approve "$cli except no-such-file | xargs -n1 | sort | xargs" "respec_except_no_such_file"
+    # this is a repeat of the previous test
+    approve "$cli except no-such-file | xargs -n1 | sort | xargs" "respec_except_no_such_file_ci"
 
 context "when there are no specs recently modified"
   describe "last"

@@ -73,18 +73,6 @@ respec_usage() {
     printf "    Default: spec/spec_helper.rb\n"
     echo
 
-    # :environment_variable.usage
-    echo "  RESPEC_RSPEC_COMMAND"
-    printf "    The command for running rspec\n"
-    printf "    Default: bundle exec rspec\n"
-    echo
-
-    # :environment_variable.usage
-    echo "  RESPEC_FILEWATCHER_COMMAND"
-    printf "    The command for running filewatcher\n"
-    printf "    Default: filewatcher\n"
-    echo
-
   fi
 }
 
@@ -556,7 +544,7 @@ reset_status() {
 
 # src/lib/run_rspec.sh
 run_rspec() {
-  $RESPEC_RSPEC_COMMAND "$@" || bell
+  bundle exec rspec "$@" || bell
 }
 
 # src/lib/send_completions.sh
@@ -774,7 +762,7 @@ respec_reset_command() {
 respec_watch_command() {
   # src/watch_command.sh
   banner "watch *.rb > respec focus"
-  $RESPEC_FILEWATCHER_COMMAND '**/*.rb' "clear ; respec focus"
+  filewatcher '**/*.rb' "clear ; respec focus"
 
 }
 
@@ -811,8 +799,6 @@ parse_requirements() {
   # :command.environment_variables_default
   export RESPEC_STATUS_FILE="${RESPEC_STATUS_FILE:-spec/status.txt}"
   export RESPEC_HELPER_PATH="${RESPEC_HELPER_PATH:-spec/spec_helper.rb}"
-  export RESPEC_RSPEC_COMMAND="${RESPEC_RSPEC_COMMAND:-bundle exec rspec}"
-  export RESPEC_FILEWATCHER_COMMAND="${RESPEC_FILEWATCHER_COMMAND:-filewatcher}"
 
   # :command.command_filter
   action=${1:-}
@@ -945,6 +931,21 @@ respec_all_parse_requirements() {
     esac
   done
 
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
+
   # :command.command_filter
   action="all"
 
@@ -989,6 +990,21 @@ respec_focus_parse_requirements() {
     esac
   done
 
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
+
   # :command.command_filter
   action="focus"
 
@@ -1032,6 +1048,21 @@ respec_only_parse_requirements() {
 
     esac
   done
+
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
 
   # :command.command_filter
   action="only"
@@ -1089,6 +1120,21 @@ respec_except_parse_requirements() {
     esac
   done
 
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
+
   # :command.command_filter
   action="except"
 
@@ -1144,6 +1190,21 @@ respec_last_parse_requirements() {
 
     esac
   done
+
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
 
   # :command.command_filter
   action="last"
@@ -1203,6 +1264,21 @@ respec_fails_parse_requirements() {
     esac
   done
 
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
+
   # :command.command_filter
   action="fails"
 
@@ -1253,6 +1329,21 @@ respec_continue_parse_requirements() {
 
     esac
   done
+
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
 
   # :command.command_filter
   action="continue"
@@ -1356,6 +1447,28 @@ respec_watch_parse_requirements() {
     esac
   done
 
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v filewatcher >/dev/null 2>&1; then
+    printf "missing dependency: filewatcher\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install with $(magenta gem install filewatcher-cli)\n" >&2
+    exit 1
+  fi
+
   # :command.command_filter
   action="watch"
 
@@ -1435,8 +1548,6 @@ initialize() {
   # :command.environment_variables_default
   export RESPEC_STATUS_FILE="${RESPEC_STATUS_FILE:-spec/status.txt}"
   export RESPEC_HELPER_PATH="${RESPEC_HELPER_PATH:-spec/spec_helper.rb}"
-  export RESPEC_RSPEC_COMMAND="${RESPEC_RSPEC_COMMAND:-bundle exec rspec}"
-  export RESPEC_FILEWATCHER_COMMAND="${RESPEC_FILEWATCHER_COMMAND:-filewatcher}"
 
   # src/initialize.sh
 

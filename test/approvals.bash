@@ -5,7 +5,7 @@
 approve() {
   local expected approval approval_file actual cmd
   approvals_dir=${APPROVALS_DIR:=approvals}
-  
+
   cmd=$1
   last_exit_code=0
   actual=$(eval "$cmd" 2>&1) || last_exit_code=$?
@@ -29,28 +29,29 @@ approve() {
     pass "$cmd"
   else
     echo "--- [$(blue "diff: $cmd")] ---"
-    $diff_cmd <(printf "%b" "$expected\n") <(printf "%b" "$actual\n" )  | tail -n +4
+    $diff_cmd <(printf "%b" "$expected\n") <(printf "%b" "$actual\n") | tail -n +4
     echo "--- [$(blue "diff: $cmd")] ---"
     user_approval "$cmd" "$actual" "$approval_file"
   fi
 }
 
 describe() {
-  echo "  $*"
+  echo
+  blue "= $*"
 }
 
 context() {
   echo
-  echo "$*"
+  magenta "= $*"
 }
 
 fail() {
-  red "    FAILED: $*"
+  red "  FAILED: $*"
   exit 1
 }
 
 pass() {
-  green "    approved: $*"
+  green "  approved: $*"
   return 0
 }
 
@@ -79,12 +80,12 @@ user_approval() {
     fail "$cmd"
   fi
 
-  echo 
+  echo
   printf "[A]pprove? \n"
   response=$(bash -c "read -n 1 key; echo \$key")
   printf "\r"
   if [[ $response =~ [Aa] ]]; then
-    printf "%b\n" "$actual" > "$approval_file"
+    printf "%b\n" "$actual" >"$approval_file"
     pass "$cmd"
   else
     fail "$cmd"
@@ -109,7 +110,7 @@ set -e
 trap 'onexit' EXIT
 trap 'onerror' ERR
 
-if diff --help | grep -- --color > /dev/null 2>&1; then
+if diff --help | grep -- --color >/dev/null 2>&1; then
   diff_cmd="diff --unified --color=always"
 else
   diff_cmd="diff --unified"
