@@ -1,4 +1,4 @@
-# approvals.bash v0.3.2
+# approvals.bash v0.3.3
 #
 # Interactive approval testing for Bash.
 # https://github.com/DannyBen/approvals.bash
@@ -7,8 +7,8 @@ approve() {
   approvals_dir=${APPROVALS_DIR:=approvals}
   
   cmd=$1
-  actual=$(eval "$cmd" 2>&1)  
-  last_exit_code=$?
+  last_exit_code=0
+  actual=$(eval "$cmd" 2>&1) || last_exit_code=$?
   approval=$(printf "%b" "$cmd" | tr -s -c "[:alnum:]" _)
   approval_file="$approvals_dir/${2:-"$approval"}"
 
@@ -45,7 +45,7 @@ context() {
 }
 
 fail() {
-  red "    FAILED $*"
+  red "    FAILED: $*"
   exit 1
 }
 

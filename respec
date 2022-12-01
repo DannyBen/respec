@@ -480,7 +480,7 @@ inspect_args() {
 # :command.user_lib
 # src/lib/banner.sh
 banner() {
-  magenta "respec: $*";
+  magenta "respec: $*"
 }
 
 # src/lib/bell.sh
