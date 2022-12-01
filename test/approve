@@ -12,9 +12,10 @@ unset RESPEC_HELPER_PATH
 unset RESPEC_STATUS_FILE
 
 # Stub some commands
+rspec()       { printf "[stubbed] \$ rspec %s" "$*"; }
 bundle()      { printf "[stubbed] \$ bundle %s" "$*"; }
 filewatcher() { printf "[stubbed] \$ filewatcher %s" "$*"; }
-export -f bundle filewatcher
+export -f rspec bundle filewatcher
 
 # Tests
 context "when there are no special environment requirements"
