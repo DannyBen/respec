@@ -945,21 +945,6 @@ respec_all_parse_requirements() {
     esac
   done
 
-  # :command.dependencies_filter
-  if ! [[ -x "$(command -v rspec)" ]]; then
-    printf "missing dependency: rspec\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install rspec)\n" >&2
-    exit 1
-  fi
-
-  if ! [[ -x "$(command -v bundler)" ]]; then
-    printf "missing dependency: bundler\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install bundler)\n" >&2
-    exit 1
-  fi
-
   # :command.command_filter
   action="all"
 
@@ -1004,21 +989,6 @@ respec_focus_parse_requirements() {
     esac
   done
 
-  # :command.dependencies_filter
-  if ! [[ -x "$(command -v rspec)" ]]; then
-    printf "missing dependency: rspec\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install rspec)\n" >&2
-    exit 1
-  fi
-
-  if ! [[ -x "$(command -v bundler)" ]]; then
-    printf "missing dependency: bundler\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install bundler)\n" >&2
-    exit 1
-  fi
-
   # :command.command_filter
   action="focus"
 
@@ -1062,21 +1032,6 @@ respec_only_parse_requirements() {
 
     esac
   done
-
-  # :command.dependencies_filter
-  if ! [[ -x "$(command -v rspec)" ]]; then
-    printf "missing dependency: rspec\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install rspec)\n" >&2
-    exit 1
-  fi
-
-  if ! [[ -x "$(command -v bundler)" ]]; then
-    printf "missing dependency: bundler\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install bundler)\n" >&2
-    exit 1
-  fi
 
   # :command.command_filter
   action="only"
@@ -1134,21 +1089,6 @@ respec_except_parse_requirements() {
     esac
   done
 
-  # :command.dependencies_filter
-  if ! [[ -x "$(command -v rspec)" ]]; then
-    printf "missing dependency: rspec\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install rspec)\n" >&2
-    exit 1
-  fi
-
-  if ! [[ -x "$(command -v bundler)" ]]; then
-    printf "missing dependency: bundler\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install bundler)\n" >&2
-    exit 1
-  fi
-
   # :command.command_filter
   action="except"
 
@@ -1204,21 +1144,6 @@ respec_last_parse_requirements() {
 
     esac
   done
-
-  # :command.dependencies_filter
-  if ! [[ -x "$(command -v rspec)" ]]; then
-    printf "missing dependency: rspec\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install rspec)\n" >&2
-    exit 1
-  fi
-
-  if ! [[ -x "$(command -v bundler)" ]]; then
-    printf "missing dependency: bundler\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install bundler)\n" >&2
-    exit 1
-  fi
 
   # :command.command_filter
   action="last"
@@ -1278,21 +1203,6 @@ respec_fails_parse_requirements() {
     esac
   done
 
-  # :command.dependencies_filter
-  if ! [[ -x "$(command -v rspec)" ]]; then
-    printf "missing dependency: rspec\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install rspec)\n" >&2
-    exit 1
-  fi
-
-  if ! [[ -x "$(command -v bundler)" ]]; then
-    printf "missing dependency: bundler\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install bundler)\n" >&2
-    exit 1
-  fi
-
   # :command.command_filter
   action="fails"
 
@@ -1343,21 +1253,6 @@ respec_continue_parse_requirements() {
 
     esac
   done
-
-  # :command.dependencies_filter
-  if ! [[ -x "$(command -v rspec)" ]]; then
-    printf "missing dependency: rspec\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install rspec)\n" >&2
-    exit 1
-  fi
-
-  if ! [[ -x "$(command -v bundler)" ]]; then
-    printf "missing dependency: bundler\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install bundler)\n" >&2
-    exit 1
-  fi
 
   # :command.command_filter
   action="continue"
@@ -1460,28 +1355,6 @@ respec_watch_parse_requirements() {
 
     esac
   done
-
-  # :command.dependencies_filter
-  if ! [[ -x "$(command -v rspec)" ]]; then
-    printf "missing dependency: rspec\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install rspec)\n" >&2
-    exit 1
-  fi
-
-  if ! [[ -x "$(command -v bundler)" ]]; then
-    printf "missing dependency: bundler\n" >&2
-    # shellcheck disable=SC2059
-    printf "Insall using $(magenta gem install bundler)\n" >&2
-    exit 1
-  fi
-
-  if ! [[ -x "$(command -v filewatcher)" ]]; then
-    printf "missing dependency: filewatcher\n" >&2
-    # shellcheck disable=SC2059
-    printf "Install with $(magenta gem install filewatcher-cli)\n" >&2
-    exit 1
-  fi
 
   # :command.command_filter
   action="watch"
