@@ -3,6 +3,12 @@
 ![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
 [![Test](https://github.com/DannyBen/respec/actions/workflows/test.yml/badge.svg)](https://github.com/DannyBen/respec/actions/workflows/test.yml)
 
+---
+
+Respec is a bash script convenience interface for Ruby's RSpec.
+
+## Install
+
 ### Installing using the setup script
 
 This setup script will download the respec executable to `/usr/local/bin/` and
@@ -42,7 +48,12 @@ Commands:
 
 ## Setup 
 
-Update the following files in your repository:
+Update the following files in your repository.
+
+### Status file setup
+
+This is required for the `respec continue`, `respec fails` commands.
+
 
 ```ruby
 # spec/spec_helper.rb
@@ -51,10 +62,17 @@ RSpec.configure do |config|
 end
 ```
 
+and then, you should probably gitignore this file.
+
 ```bash
 # .gitignore
-spec/status.txt
+/spec/status.txt
 ```
+
+### Recommended rspec arguments
+
+Put this in the `.rspec` file in your repository.
+
 
 ```bash
 # .rspec
