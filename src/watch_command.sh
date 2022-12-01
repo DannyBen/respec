@@ -1,2 +1,2 @@
 banner "watch *.rb > respec focus"
-$RESPEC_FILEWATCHER_COMMAND '**/*.rb' "clear ; respec focus"
+filewatcher '**/*.rb' "clear ; respec focus"

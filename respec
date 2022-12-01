@@ -73,18 +73,6 @@ respec_usage() {
     printf "    Default: spec/spec_helper.rb\n"
     echo
 
-    # :environment_variable.usage
-    echo "  RESPEC_RSPEC_COMMAND"
-    printf "    The command for running rspec\n"
-    printf "    Default: bundle exec rspec\n"
-    echo
-
-    # :environment_variable.usage
-    echo "  RESPEC_FILEWATCHER_COMMAND"
-    printf "    The command for running filewatcher\n"
-    printf "    Default: filewatcher\n"
-    echo
-
   fi
 }
 
@@ -447,7 +435,7 @@ normalize_input() {
       input+=("${BASH_REMATCH[2]}")
     elif [[ $arg =~ ^-([a-zA-Z0-9][a-zA-Z0-9]+)$ ]]; then
       flags="${BASH_REMATCH[1]}"
-      for (( i=0 ; i < ${#flags} ; i++ )); do
+      for ((i = 0; i < ${#flags}; i++)); do
         input+=("-${flags:i:1}")
       done
     else
@@ -460,14 +448,14 @@ normalize_input() {
 # :command.inspect_args
 inspect_args() {
   readarray -t sorted_keys < <(printf '%s\n' "${!args[@]}" | sort)
-  if (( ${#args[@]} )); then
+  if ((${#args[@]})); then
     echo args:
     for k in "${sorted_keys[@]}"; do echo "- \${args[$k]} = ${args[$k]}"; done
   else
     echo args: none
   fi
 
-  if (( ${#other_args[@]} )); then
+  if ((${#other_args[@]})); then
     echo
     echo other_args:
     echo "- \${other_args[*]} = ${other_args[*]}"
@@ -480,7 +468,7 @@ inspect_args() {
 # :command.user_lib
 # src/lib/banner.sh
 banner() {
-  magenta "respec: $*";
+  magenta "respec: $*"
 }
 
 # src/lib/bell.sh
@@ -493,9 +481,9 @@ print_in_color() {
   local color="$1"
   shift
   if [[ -z ${NO_COLOR+x} ]]; then
-    printf "$color%b\e[0m\n" "$*";
+    printf "$color%b\e[0m\n" "$*"
   else
-    printf "%b\n" "$*";
+    printf "%b\n" "$*"
   fi
 }
 
@@ -556,7 +544,7 @@ reset_status() {
 
 # src/lib/run_rspec.sh
 run_rspec() {
-  $RESPEC_RSPEC_COMMAND "$@" || bell
+  bundle exec rspec "$@" || bell
 }
 
 # src/lib/send_completions.sh
@@ -774,7 +762,7 @@ respec_reset_command() {
 respec_watch_command() {
   # src/watch_command.sh
   banner "watch *.rb > respec focus"
-  $RESPEC_FILEWATCHER_COMMAND '**/*.rb' "clear ; respec focus"
+  filewatcher '**/*.rb' "clear ; respec focus"
 
 }
 
@@ -789,20 +777,20 @@ parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
-  --version | -v )
-    version_command
-    exit
-    ;;
+      --version | -v)
+        version_command
+        exit
+        ;;
 
-  --help | -h )
-    long_usage=yes
-    respec_usage
-    exit
-    ;;
+      --help | -h)
+        long_usage=yes
+        respec_usage
+        exit
+        ;;
 
-    * )
-      break
-      ;;
+      *)
+        break
+        ;;
 
     esac
   done
@@ -811,96 +799,94 @@ parse_requirements() {
   # :command.environment_variables_default
   export RESPEC_STATUS_FILE="${RESPEC_STATUS_FILE:-spec/status.txt}"
   export RESPEC_HELPER_PATH="${RESPEC_HELPER_PATH:-spec/spec_helper.rb}"
-  export RESPEC_RSPEC_COMMAND="${RESPEC_RSPEC_COMMAND:-bundle exec rspec}"
-  export RESPEC_FILEWATCHER_COMMAND="${RESPEC_FILEWATCHER_COMMAND:-filewatcher}"
 
   # :command.command_filter
   action=${1:-}
 
   case $action in
-  -* )
-    ;;
+    -*)
+      ;;
 
-  all | a )
-    action="all"
-    shift
-    respec_all_parse_requirements "$@"
-    shift $#
-    ;;
+    all | a)
+      action="all"
+      shift
+      respec_all_parse_requirements "$@"
+      shift $#
+      ;;
 
-  focus | f )
-    action="focus"
-    shift
-    respec_focus_parse_requirements "$@"
-    shift $#
-    ;;
+    focus | f)
+      action="focus"
+      shift
+      respec_focus_parse_requirements "$@"
+      shift $#
+      ;;
 
-  only | o )
-    action="only"
-    shift
-    respec_only_parse_requirements "$@"
-    shift $#
-    ;;
+    only | o)
+      action="only"
+      shift
+      respec_only_parse_requirements "$@"
+      shift $#
+      ;;
 
-  except | ex )
-    action="except"
-    shift
-    respec_except_parse_requirements "$@"
-    shift $#
-    ;;
+    except | ex)
+      action="except"
+      shift
+      respec_except_parse_requirements "$@"
+      shift $#
+      ;;
 
-  last | l )
-    action="last"
-    shift
-    respec_last_parse_requirements "$@"
-    shift $#
-    ;;
+    last | l)
+      action="last"
+      shift
+      respec_last_parse_requirements "$@"
+      shift $#
+      ;;
 
-  fails | failures )
-    action="fails"
-    shift
-    respec_fails_parse_requirements "$@"
-    shift $#
-    ;;
+    fails | failures)
+      action="fails"
+      shift
+      respec_fails_parse_requirements "$@"
+      shift $#
+      ;;
 
-  continue | c | cont )
-    action="continue"
-    shift
-    respec_continue_parse_requirements "$@"
-    shift $#
-    ;;
+    continue | c | cont)
+      action="continue"
+      shift
+      respec_continue_parse_requirements "$@"
+      shift $#
+      ;;
 
-  reset | r )
-    action="reset"
-    shift
-    respec_reset_parse_requirements "$@"
-    shift $#
-    ;;
+    reset | r)
+      action="reset"
+      shift
+      respec_reset_parse_requirements "$@"
+      shift $#
+      ;;
 
-  watch | w )
-    action="watch"
-    shift
-    respec_watch_parse_requirements "$@"
-    shift $#
-    ;;
+    watch | w)
+      action="watch"
+      shift
+      respec_watch_parse_requirements "$@"
+      shift $#
+      ;;
 
-  completions )
-    action="completions"
-    shift
-    respec_completions_parse_requirements "$@"
-    shift $#
-    ;;
+    completions)
+      action="completions"
+      shift
+      respec_completions_parse_requirements "$@"
+      shift $#
+      ;;
 
-  # :command.command_fallback
-  "" )
-    respec_usage >&2
-    exit 1
-    ;;
+    # :command.command_fallback
+    "")
+      respec_usage >&2
+      exit 1
+      ;;
 
-  * )
-    printf "invalid command: %s\n" "$action" >&2
-    exit 1
-    ;;
+    *)
+      printf "invalid command: %s\n" "$action" >&2
+      exit 1
+      ;;
 
   esac
 
@@ -909,18 +895,18 @@ parse_requirements() {
     key="$1"
     case "$key" in
 
-    -?* )
-      printf "invalid option: %s\n" "$key" >&2
-      exit 1
-      ;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-    * )
-      # :command.parse_requirements_case
-      # :command.parse_requirements_case_simple
-      printf "invalid argument: %s\n" "$key" >&2
-      exit 1
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-      ;;
+        ;;
 
     esac
   done
@@ -932,18 +918,33 @@ respec_all_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
-  --help | -h )
-    long_usage=yes
-    respec_all_usage
-    exit
-    ;;
+      --help | -h)
+        long_usage=yes
+        respec_all_usage
+        exit
+        ;;
 
-    * )
-      break
-      ;;
+      *)
+        break
+        ;;
 
     esac
   done
+
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
 
   # :command.command_filter
   action="all"
@@ -953,18 +954,18 @@ respec_all_parse_requirements() {
     key="$1"
     case "$key" in
 
-    -?* )
-      printf "invalid option: %s\n" "$key" >&2
-      exit 1
-      ;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-    * )
-      # :command.parse_requirements_case
-      # :command.parse_requirements_case_simple
-      printf "invalid argument: %s\n" "$key" >&2
-      exit 1
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-      ;;
+        ;;
 
     esac
   done
@@ -976,18 +977,33 @@ respec_focus_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
-  --help | -h )
-    long_usage=yes
-    respec_focus_usage
-    exit
-    ;;
+      --help | -h)
+        long_usage=yes
+        respec_focus_usage
+        exit
+        ;;
 
-    * )
-      break
-      ;;
+      *)
+        break
+        ;;
 
     esac
   done
+
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
 
   # :command.command_filter
   action="focus"
@@ -997,18 +1013,18 @@ respec_focus_parse_requirements() {
     key="$1"
     case "$key" in
 
-    -?* )
-      printf "invalid option: %s\n" "$key" >&2
-      exit 1
-      ;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-    * )
-      # :command.parse_requirements_case
-      # :command.parse_requirements_case_simple
-      printf "invalid argument: %s\n" "$key" >&2
-      exit 1
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-      ;;
+        ;;
 
     esac
   done
@@ -1020,18 +1036,33 @@ respec_only_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
-  --help | -h )
-    long_usage=yes
-    respec_only_usage
-    exit
-    ;;
+      --help | -h)
+        long_usage=yes
+        respec_only_usage
+        exit
+        ;;
 
-    * )
-      break
-      ;;
+      *)
+        break
+        ;;
 
     esac
   done
+
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
 
   # :command.command_filter
   action="only"
@@ -1041,24 +1072,24 @@ respec_only_parse_requirements() {
     key="$1"
     case "$key" in
 
-    -?* )
-      printf "invalid option: %s\n" "$key" >&2
-      exit 1
-      ;;
-
-    * )
-      # :command.parse_requirements_case
-      # :command.parse_requirements_case_simple
-      if [[ -z ${args[search]+x} ]]; then
-
-        args[search]=$1
-        shift
-      else
-        printf "invalid argument: %s\n" "$key" >&2
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
         exit 1
-      fi
+        ;;
 
-      ;;
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        if [[ -z ${args[search]+x} ]]; then
+
+          args[search]=$1
+          shift
+        else
+          printf "invalid argument: %s\n" "$key" >&2
+          exit 1
+        fi
+
+        ;;
 
     esac
   done
@@ -1076,18 +1107,33 @@ respec_except_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
-  --help | -h )
-    long_usage=yes
-    respec_except_usage
-    exit
-    ;;
+      --help | -h)
+        long_usage=yes
+        respec_except_usage
+        exit
+        ;;
 
-    * )
-      break
-      ;;
+      *)
+        break
+        ;;
 
     esac
   done
+
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
 
   # :command.command_filter
   action="except"
@@ -1097,24 +1143,24 @@ respec_except_parse_requirements() {
     key="$1"
     case "$key" in
 
-    -?* )
-      printf "invalid option: %s\n" "$key" >&2
-      exit 1
-      ;;
-
-    * )
-      # :command.parse_requirements_case
-      # :command.parse_requirements_case_simple
-      if [[ -z ${args[search]+x} ]]; then
-
-        args[search]=$1
-        shift
-      else
-        printf "invalid argument: %s\n" "$key" >&2
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
         exit 1
-      fi
+        ;;
 
-      ;;
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        if [[ -z ${args[search]+x} ]]; then
+
+          args[search]=$1
+          shift
+        else
+          printf "invalid argument: %s\n" "$key" >&2
+          exit 1
+        fi
+
+        ;;
 
     esac
   done
@@ -1132,18 +1178,33 @@ respec_last_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
-  --help | -h )
-    long_usage=yes
-    respec_last_usage
-    exit
-    ;;
+      --help | -h)
+        long_usage=yes
+        respec_last_usage
+        exit
+        ;;
 
-    * )
-      break
-      ;;
+      *)
+        break
+        ;;
 
     esac
   done
+
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
 
   # :command.command_filter
   action="last"
@@ -1153,29 +1214,29 @@ respec_last_parse_requirements() {
     key="$1"
     case "$key" in
 
-    -?* )
-      printf "invalid option: %s\n" "$key" >&2
-      exit 1
-      ;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-    * )
-      # :command.parse_requirements_case
-      # :command.parse_requirements_case_simple
-      if [[ -z ${args[min]+x} ]]; then
-        # :argument.validations
-        if [[ -n $(validate_integer "$1") ]]; then
-          printf "validation error in %s:\n%s\n" "MIN" "$(validate_integer "$1")" >&2
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        if [[ -z ${args[min]+x} ]]; then
+          # :argument.validations
+          if [[ -n $(validate_integer "$1") ]]; then
+            printf "validation error in %s:\n%s\n" "MIN" "$(validate_integer "$1")" >&2
+            exit 1
+          fi
+
+          args[min]=$1
+          shift
+        else
+          printf "invalid argument: %s\n" "$key" >&2
           exit 1
         fi
 
-        args[min]=$1
-        shift
-      else
-        printf "invalid argument: %s\n" "$key" >&2
-        exit 1
-      fi
-
-      ;;
+        ;;
 
     esac
   done
@@ -1190,18 +1251,33 @@ respec_fails_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
-  --help | -h )
-    long_usage=yes
-    respec_fails_usage
-    exit
-    ;;
+      --help | -h)
+        long_usage=yes
+        respec_fails_usage
+        exit
+        ;;
 
-    * )
-      break
-      ;;
+      *)
+        break
+        ;;
 
     esac
   done
+
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
 
   # :command.command_filter
   action="fails"
@@ -1211,18 +1287,18 @@ respec_fails_parse_requirements() {
     key="$1"
     case "$key" in
 
-    -?* )
-      printf "invalid option: %s\n" "$key" >&2
-      exit 1
-      ;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-    * )
-      # :command.parse_requirements_case
-      # :command.parse_requirements_case_simple
-      printf "invalid argument: %s\n" "$key" >&2
-      exit 1
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-      ;;
+        ;;
 
     esac
   done
@@ -1241,18 +1317,33 @@ respec_continue_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
-  --help | -h )
-    long_usage=yes
-    respec_continue_usage
-    exit
-    ;;
+      --help | -h)
+        long_usage=yes
+        respec_continue_usage
+        exit
+        ;;
 
-    * )
-      break
-      ;;
+      *)
+        break
+        ;;
 
     esac
   done
+
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
 
   # :command.command_filter
   action="continue"
@@ -1262,18 +1353,18 @@ respec_continue_parse_requirements() {
     key="$1"
     case "$key" in
 
-    -?* )
-      printf "invalid option: %s\n" "$key" >&2
-      exit 1
-      ;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-    * )
-      # :command.parse_requirements_case
-      # :command.parse_requirements_case_simple
-      printf "invalid argument: %s\n" "$key" >&2
-      exit 1
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-      ;;
+        ;;
 
     esac
   done
@@ -1292,15 +1383,15 @@ respec_reset_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
-  --help | -h )
-    long_usage=yes
-    respec_reset_usage
-    exit
-    ;;
+      --help | -h)
+        long_usage=yes
+        respec_reset_usage
+        exit
+        ;;
 
-    * )
-      break
-      ;;
+      *)
+        break
+        ;;
 
     esac
   done
@@ -1313,18 +1404,18 @@ respec_reset_parse_requirements() {
     key="$1"
     case "$key" in
 
-    -?* )
-      printf "invalid option: %s\n" "$key" >&2
-      exit 1
-      ;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-    * )
-      # :command.parse_requirements_case
-      # :command.parse_requirements_case_simple
-      printf "invalid argument: %s\n" "$key" >&2
-      exit 1
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-      ;;
+        ;;
 
     esac
   done
@@ -1343,24 +1434,38 @@ respec_watch_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
-  --help | -h )
-    long_usage=yes
-    respec_watch_usage
-    exit
-    ;;
+      --help | -h)
+        long_usage=yes
+        respec_watch_usage
+        exit
+        ;;
 
-    * )
-      break
-      ;;
+      *)
+        break
+        ;;
 
     esac
   done
 
   # :command.dependencies_filter
-  if ! [[ -x "$(command -v filewatcher)" ]]; then
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v filewatcher >/dev/null 2>&1; then
     printf "missing dependency: filewatcher\n" >&2
     # shellcheck disable=SC2059
-    printf "install with $(magenta gem install filewatcher-cli)\n" >&2
+    printf "Install with $(magenta gem install filewatcher-cli)\n" >&2
     exit 1
   fi
 
@@ -1372,18 +1477,18 @@ respec_watch_parse_requirements() {
     key="$1"
     case "$key" in
 
-    -?* )
-      printf "invalid option: %s\n" "$key" >&2
-      exit 1
-      ;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-    * )
-      # :command.parse_requirements_case
-      # :command.parse_requirements_case_simple
-      printf "invalid argument: %s\n" "$key" >&2
-      exit 1
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-      ;;
+        ;;
 
     esac
   done
@@ -1395,15 +1500,15 @@ respec_completions_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
-  --help | -h )
-    long_usage=yes
-    respec_completions_usage
-    exit
-    ;;
+      --help | -h)
+        long_usage=yes
+        respec_completions_usage
+        exit
+        ;;
 
-    * )
-      break
-      ;;
+      *)
+        break
+        ;;
 
     esac
   done
@@ -1416,18 +1521,18 @@ respec_completions_parse_requirements() {
     key="$1"
     case "$key" in
 
-    -?* )
-      printf "invalid option: %s\n" "$key" >&2
-      exit 1
-      ;;
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
 
-    * )
-      # :command.parse_requirements_case
-      # :command.parse_requirements_case_simple
-      printf "invalid argument: %s\n" "$key" >&2
-      exit 1
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
-      ;;
+        ;;
 
     esac
   done
@@ -1443,8 +1548,6 @@ initialize() {
   # :command.environment_variables_default
   export RESPEC_STATUS_FILE="${RESPEC_STATUS_FILE:-spec/status.txt}"
   export RESPEC_HELPER_PATH="${RESPEC_HELPER_PATH:-spec/spec_helper.rb}"
-  export RESPEC_RSPEC_COMMAND="${RESPEC_RSPEC_COMMAND:-bundle exec rspec}"
-  export RESPEC_FILEWATCHER_COMMAND="${RESPEC_FILEWATCHER_COMMAND:-filewatcher}"
 
   # src/initialize.sh
 
@@ -1458,89 +1561,102 @@ run() {
   normalize_input "$@"
   parse_requirements "${input[@]}"
 
-  if [[ $action == "all" ]]; then
-    if [[ ${args[--help]:-} ]]; then
-      long_usage=yes
-      respec_all_usage
-    else
-      respec_all_command
-    fi
+  case "$action" in
+    "all")
+      if [[ ${args[--help]:-} ]]; then
+        long_usage=yes
+        respec_all_usage
+      else
+        respec_all_command
+      fi
+      ;;
 
-  elif [[ $action == "focus" ]]; then
-    if [[ ${args[--help]:-} ]]; then
-      long_usage=yes
-      respec_focus_usage
-    else
-      respec_focus_command
-    fi
+    "focus")
+      if [[ ${args[--help]:-} ]]; then
+        long_usage=yes
+        respec_focus_usage
+      else
+        respec_focus_command
+      fi
+      ;;
 
-  elif [[ $action == "only" ]]; then
-    if [[ ${args[--help]:-} ]]; then
-      long_usage=yes
-      respec_only_usage
-    else
-      respec_only_command
-    fi
+    "only")
+      if [[ ${args[--help]:-} ]]; then
+        long_usage=yes
+        respec_only_usage
+      else
+        respec_only_command
+      fi
+      ;;
 
-  elif [[ $action == "except" ]]; then
-    if [[ ${args[--help]:-} ]]; then
-      long_usage=yes
-      respec_except_usage
-    else
-      respec_except_command
-    fi
+    "except")
+      if [[ ${args[--help]:-} ]]; then
+        long_usage=yes
+        respec_except_usage
+      else
+        respec_except_command
+      fi
+      ;;
 
-  elif [[ $action == "last" ]]; then
-    if [[ ${args[--help]:-} ]]; then
-      long_usage=yes
-      respec_last_usage
-    else
-      respec_last_command
-    fi
+    "last")
+      if [[ ${args[--help]:-} ]]; then
+        long_usage=yes
+        respec_last_usage
+      else
+        respec_last_command
+      fi
+      ;;
 
-  elif [[ $action == "fails" ]]; then
-    if [[ ${args[--help]:-} ]]; then
-      long_usage=yes
-      respec_fails_usage
-    else
-      respec_fails_command
-    fi
+    "fails")
+      if [[ ${args[--help]:-} ]]; then
+        long_usage=yes
+        respec_fails_usage
+      else
+        respec_fails_command
+      fi
+      ;;
 
-  elif [[ $action == "continue" ]]; then
-    if [[ ${args[--help]:-} ]]; then
-      long_usage=yes
-      respec_continue_usage
-    else
-      respec_continue_command
-    fi
+    "continue")
+      if [[ ${args[--help]:-} ]]; then
+        long_usage=yes
+        respec_continue_usage
+      else
+        respec_continue_command
+      fi
+      ;;
 
-  elif [[ $action == "reset" ]]; then
-    if [[ ${args[--help]:-} ]]; then
-      long_usage=yes
-      respec_reset_usage
-    else
-      respec_reset_command
-    fi
+    "reset")
+      if [[ ${args[--help]:-} ]]; then
+        long_usage=yes
+        respec_reset_usage
+      else
+        respec_reset_command
+      fi
+      ;;
 
-  elif [[ $action == "watch" ]]; then
-    if [[ ${args[--help]:-} ]]; then
-      long_usage=yes
-      respec_watch_usage
-    else
-      respec_watch_command
-    fi
+    "watch")
+      if [[ ${args[--help]:-} ]]; then
+        long_usage=yes
+        respec_watch_usage
+      else
+        respec_watch_command
+      fi
+      ;;
 
-  elif [[ $action == "completions" ]]; then
-    if [[ ${args[--help]:-} ]]; then
-      long_usage=yes
-      respec_completions_usage
-    else
-      respec_completions_command
-    fi
+    "completions")
+      if [[ ${args[--help]:-} ]]; then
+        long_usage=yes
+        respec_completions_usage
+      else
+        respec_completions_command
+      fi
+      ;;
 
-  elif [[ $action == "root" ]]; then
-    root_command
-  fi
+    "root")
+      root_command
+      ;;
+
+  esac
 }
 
 initialize

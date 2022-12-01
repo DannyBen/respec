@@ -1,2 +1,2 @@
 [35mrespec: last 10 minutes[0m
-[stubbed] $ rspec ./fixtures/spec/modified_spec.rb
+[stubbed] $ bundle exec rspec ./fixtures/spec/modified_spec.rb

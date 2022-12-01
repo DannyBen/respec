@@ -7,30 +7,27 @@ environment_variables:
   help: Where to store the rspec status file
   default: spec/status.txt
 
-- name: RESPEC_HELPER_PATH
+- name: respec_helper_path
   help: The location of the spec_helper.rb file
   default: spec/spec_helper.rb  
-
-- name: RESPEC_RSPEC_COMMAND
-  help: The command for running rspec
-  default: bundle exec rspec
-
-- name: respec_filewatcher_command
-  help: The command for running filewatcher
-  default: filewatcher
 
 commands:
   - name: all
     alias: a
     help: Run full specs
+    dependencies: &respec-deps
+      rspec: Install using $(magenta gem install rspec)
+      bundler: Install using $(magenta gem install bundler)
 
   - name: focus
     alias: f
     help: Run specs tagged with :focus
+    dependencies: *respec-deps
 
   - name: only
     alias: o
     help: Run specs on files matching a pattern
+    dependencies: *respec-deps
     args:
       - name: search
         help: Partial filename
@@ -39,6 +36,7 @@ commands:
   - name: except
     alias: ex
     help: Run specs and exclude files matching a pattern
+    dependencies: *respec-deps
     args:
       - name: search
         help: Partial filename
@@ -47,6 +45,7 @@ commands:
   - name: last
     alias: l
     help: Run specs on files modified in the last N minutes
+    dependencies: *respec-deps
     args:
       - name: min
         help: Number of minutes
@@ -56,11 +55,13 @@ commands:
   - name: fails
     alias: [failures]
     help: Run the last failed specs
+    dependencies: *respec-deps
     filters: [spec_helper_config]
 
   - name: continue
     alias: [c, cont]
     help: Continue from where the last run stopped
+    dependencies: *respec-deps
     filters: [spec_helper_config]
 
   - name: reset
@@ -72,7 +73,8 @@ commands:
     alias: w
     help: Run specs marked with :focus when any *.rb file changes
     dependencies: 
-      filewatcher: install with $(magenta gem install filewatcher-cli)
+      <<: *respec-deps
+      filewatcher: Install with $(magenta gem install filewatcher-cli)
 
   - name: completions
     help: |

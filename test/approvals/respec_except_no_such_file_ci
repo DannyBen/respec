@@ -1,0 +1,1 @@
+$ [35mrespec: bundle except exec ./fixtures/spec/config_spec.rb ./fixtures/spec/content_spec.rb ./fixtures/spec/library_spec.rb *no-such-file*[0m rspec [stubbed]

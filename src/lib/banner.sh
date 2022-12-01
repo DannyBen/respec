@@ -1,3 +1,3 @@
 banner() {
-  magenta "respec: $*";
+  magenta "respec: $*"
 }

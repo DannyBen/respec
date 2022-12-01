@@ -1,2 +1,2 @@
 [35mrespec: all[0m
-[stubbed] $ rspec
+[stubbed] $ bundle exec rspec

@@ -32,11 +32,3 @@ Environment Variables:
   RESPEC_HELPER_PATH
     The location of the spec_helper.rb file
     Default: spec/spec_helper.rb
-
-  RESPEC_RSPEC_COMMAND
-    The command for running rspec
-    Default: bundle exec rspec
-
-  RESPEC_FILEWATCHER_COMMAND
-    The command for running filewatcher
-    Default: filewatcher

@@ -1,2 +1,2 @@
 [35mrespec: failed specs[0m
-[stubbed] $ rspec --next-failure
+[stubbed] $ bundle exec rspec --next-failure

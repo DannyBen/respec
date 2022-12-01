@@ -1,2 +1,2 @@
 [35mrespec: last 1 minutes[0m
-[stubbed] $ rspec -tnothing
+[stubbed] $ bundle exec rspec -tnothing
