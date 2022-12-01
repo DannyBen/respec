@@ -11,11 +11,14 @@ cli=respec
 unset RESPEC_HELPER_PATH
 unset RESPEC_STATUS_FILE
 
-# Stub some commands
+# Stub some commands:
+# - rspec and bundler: for CI, since they are not installed there
+# - bundle and filewatcher: to avoid running them
 rspec()       { printf "[stubbed] \$ rspec %s" "$*"; }
+bundler()     { printf "[stubbed] \$ bundler %s" "$*"; }
 bundle()      { printf "[stubbed] \$ bundle %s" "$*"; }
 filewatcher() { printf "[stubbed] \$ filewatcher %s" "$*"; }
-export -f rspec bundle filewatcher
+export -f rspec bundle bundler filewatcher
 
 # Tests
 context "when there are no special environment requirements"
