@@ -6,7 +6,7 @@ Usage:
   respec --version | -v
 
 Commands:
-  all           Run full specs
+  all           Run full specs (default)
   focus         Run specs tagged with :focus
   only          Run specs on files matching a pattern
   except        Run specs and exclude files matching a pattern
