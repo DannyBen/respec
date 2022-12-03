@@ -3,12 +3,15 @@ respec last - Run specs on files modified in the last N minutes
 Alias: l
 
 Usage:
-  respec last [MIN]
+  respec last [MIN] [OPTIONS]
   respec last --help | -h
 
 Options:
   --help, -h
     Show this help
+
+  --watch, -w
+    Watch for change and rerun
 
 Arguments:
   MIN

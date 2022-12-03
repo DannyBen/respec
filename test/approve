@@ -54,10 +54,6 @@ context "when there are no special environment requirements"
   describe "reset"
     approve "$cli reset --help"
 
-  describe "watch"
-    approve "$cli watch --help"
-    approve "$cli watch"
-
 
 context "when there is no spec_helper"
   describe "fails"
@@ -103,23 +99,31 @@ context "with a properly configured environment"
 
   describe "only"
     approve "$cli only con"
+    approve "$cli only con -w"
     approve "$cli only no-such-files"
 
   describe "except"
     approve "$cli except con"
+    approve "$cli except con -w"
     [[ -z $CI ]] && approve "$cli except no-such-file" "respec_except_no_such_file"
     # sort since the output is different in CI
     # this is a repeat of the previous test
     approve "$cli except no-such-file | xargs -n1 | sort | xargs" "respec_except_no_such_file_ci"
+
+  describe "last"
+    approve "$cli last 10 -w"
 
 context "when there are no specs recently modified"
   describe "last"
     # this touch does not work on vagrant, it is here for CI only
     touch -d "2 hours ago" fixtures/spec/*.rb
     approve "$cli last 1" "respec_last_no_changes"
+    approve "$cli last 1" "respec_last_no_changes"
 
 context "when there are specs recently modified"
   touch "fixtures/spec/modified_spec.rb"
+  
   describe "last"
     approve "$cli last" "respec_last_changes"
+  
   rm -f "fixtures/spec/modified_spec.rb"
