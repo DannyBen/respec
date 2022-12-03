@@ -540,7 +540,7 @@ run_rspec() {
 
 # src/lib/run_watch.sh
 run_watch() {
-  filewatcher --immediate '**/*.rb' "clear ; $@"
+  filewatcher --immediate '**/*.rb' "clear ; $*"
 }
 
 # src/lib/send_completions.sh

@@ -1,3 +1,3 @@
 run_watch() {
-  filewatcher --immediate '**/*.rb' "clear ; $@"
+  filewatcher --immediate '**/*.rb' "clear ; $*"
 }
