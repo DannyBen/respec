@@ -32,9 +32,11 @@ Download the [respec](respec) script to `/usr/local/bin/` or anywhere in your
 ```
 Usage:
   respec COMMAND
+  respec [COMMAND] --help | -h
+  respec --version | -v
 
 Commands:
-  all           Run full specs
+  all           Run full specs (default)
   focus         Run specs tagged with :focus
   only          Run specs on files matching a pattern
   except        Run specs and exclude files matching a pattern
@@ -42,7 +44,6 @@ Commands:
   fails         Run the last failed specs
   continue      Continue from where the last run stopped
   reset         Delete the status file
-  watch         Run specs marked with :focus when any *.rb file changes
   completions   Echo completions function
 ```
 
