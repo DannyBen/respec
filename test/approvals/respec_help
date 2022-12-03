@@ -14,7 +14,6 @@ Commands:
   fails         Run the last failed specs
   continue      Continue from where the last run stopped
   reset         Delete the status file
-  watch         Run specs marked with :focus when any *.rb file changes
   completions   Echo completions function
 
 Options:

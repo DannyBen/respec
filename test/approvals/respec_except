@@ -1,2 +1,2 @@
 missing required argument: SEARCH
-usage: respec except SEARCH
+usage: respec except SEARCH [OPTIONS]

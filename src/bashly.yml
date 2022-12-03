@@ -12,73 +12,78 @@ environment_variables:
   default: spec/spec_helper.rb  
 
 commands:
-  - name: all
-    alias: a
-    default: force
-    help: Run full specs
-    dependencies: &respec-deps
-      rspec: Install using $(magenta gem install rspec)
-      bundler: Install using $(magenta gem install bundler)
+- name: all
+  alias: a
+  default: force
+  help: Run full specs
+  dependencies: &deps
+    rspec: Install using $(magenta gem install rspec)
+    bundler: Install using $(magenta gem install bundler)
+    filewatcher: Install with $(magenta gem install filewatcher-cli)
 
-  - name: focus
-    alias: f
-    help: Run specs tagged with :focus
-    dependencies: *respec-deps
+- name: focus
+  alias: f
+  help: Run specs tagged with :focus
+  dependencies: *deps
+  flags:
+  - &watch
+    long: --watch
+    short: -w
+    help: Watch for change and rerun
 
-  - name: only
-    alias: o
-    help: Run specs on files matching a pattern
-    dependencies: *respec-deps
-    args:
-      - name: search
-        help: Partial filename
-        required: true
+- name: only
+  alias: o
+  help: Run specs on files matching a pattern
+  dependencies: *deps
+  args:
+  - name: search
+    help: Partial filename
+    required: true
+  flags:
+  - *watch
 
-  - name: except
-    alias: ex
-    help: Run specs and exclude files matching a pattern
-    dependencies: *respec-deps
-    args:
-      - name: search
-        help: Partial filename
-        required: true
+- name: except
+  alias: ex
+  help: Run specs and exclude files matching a pattern
+  dependencies: *deps
+  args:
+  - name: search
+    help: Partial filename
+    required: true
+  flags:
+  - *watch
 
-  - name: last
-    alias: l
-    help: Run specs on files modified in the last N minutes
-    dependencies: *respec-deps
-    args:
-      - name: min
-        help: Number of minutes
-        validate: integer
-        default: "10"
+- name: last
+  alias: l
+  help: Run specs on files modified in the last N minutes
+  dependencies: *deps
+  args:
+  - name: min
+    help: Number of minutes
+    validate: integer
+    default: "10"
+  flags:
+  - *watch
 
-  - name: fails
-    alias: [failures]
-    help: Run the last failed specs
-    dependencies: *respec-deps
-    filters: [spec_helper_config]
+- name: fails
+  alias: [failures]
+  help: Run the last failed specs
+  dependencies: *deps
+  filters: [spec_helper_config]
 
-  - name: continue
-    alias: [c, cont]
-    help: Continue from where the last run stopped
-    dependencies: *respec-deps
-    filters: [spec_helper_config]
+- name: continue
+  alias: [c, cont]
+  help: Continue from where the last run stopped
+  dependencies: *deps
+  filters: [spec_helper_config]
 
-  - name: reset
-    alias: r
-    help: Delete the status file
-    filters: [spec_helper_config]
+- name: reset
+  alias: r
+  help: Delete the status file
+  filters: [spec_helper_config]
 
-  - name: watch
-    alias: w
-    help: Run specs marked with :focus when any *.rb file changes
-    dependencies: 
-      <<: *respec-deps
-      filewatcher: Install with $(magenta gem install filewatcher-cli)
+- name: completions
+  help: |
+    Echo completions function
 
-  - name: completions
-    help: |
-      Echo completions function
-
-      Intended to be used with: eval "\$(respec completions)"
+    Intended to be used with: eval "\$(respec completions)"

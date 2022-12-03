@@ -3,12 +3,15 @@ respec only - Run specs on files matching a pattern
 Alias: o
 
 Usage:
-  respec only SEARCH
+  respec only SEARCH [OPTIONS]
   respec only --help | -h
 
 Options:
   --help, -h
     Show this help
+
+  --watch, -w
+    Watch for change and rerun
 
 Arguments:
   SEARCH

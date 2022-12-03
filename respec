@@ -42,7 +42,6 @@ respec_usage() {
   echo "  fails         Run the last failed specs"
   echo "  continue      Continue from where the last run stopped"
   echo "  reset         Delete the status file"
-  echo "  watch         Run specs marked with :focus when any *.rb file changes"
   echo "  completions   Echo completions function"
   echo
 
@@ -124,7 +123,7 @@ respec_focus_usage() {
   echo
 
   printf "Usage:\n"
-  printf "  respec focus\n"
+  printf "  respec focus [OPTIONS]\n"
   printf "  respec focus --help | -h\n"
   echo
 
@@ -135,6 +134,12 @@ respec_focus_usage() {
     # :command.usage_fixed_flags
     echo "  --help, -h"
     printf "    Show this help\n"
+    echo
+
+    # :command.usage_flags
+    # :flag.usage
+    echo "  --watch, -w"
+    printf "    Watch for change and rerun\n"
     echo
 
   fi
@@ -156,7 +161,7 @@ respec_only_usage() {
   echo
 
   printf "Usage:\n"
-  printf "  respec only SEARCH\n"
+  printf "  respec only SEARCH [OPTIONS]\n"
   printf "  respec only --help | -h\n"
   echo
 
@@ -167,6 +172,12 @@ respec_only_usage() {
     # :command.usage_fixed_flags
     echo "  --help, -h"
     printf "    Show this help\n"
+    echo
+
+    # :command.usage_flags
+    # :flag.usage
+    echo "  --watch, -w"
+    printf "    Watch for change and rerun\n"
     echo
 
     # :command.usage_args
@@ -196,7 +207,7 @@ respec_except_usage() {
   echo
 
   printf "Usage:\n"
-  printf "  respec except SEARCH\n"
+  printf "  respec except SEARCH [OPTIONS]\n"
   printf "  respec except --help | -h\n"
   echo
 
@@ -207,6 +218,12 @@ respec_except_usage() {
     # :command.usage_fixed_flags
     echo "  --help, -h"
     printf "    Show this help\n"
+    echo
+
+    # :command.usage_flags
+    # :flag.usage
+    echo "  --watch, -w"
+    printf "    Watch for change and rerun\n"
     echo
 
     # :command.usage_args
@@ -236,7 +253,7 @@ respec_last_usage() {
   echo
 
   printf "Usage:\n"
-  printf "  respec last [MIN]\n"
+  printf "  respec last [MIN] [OPTIONS]\n"
   printf "  respec last --help | -h\n"
   echo
 
@@ -247,6 +264,12 @@ respec_last_usage() {
     # :command.usage_fixed_flags
     echo "  --help, -h"
     printf "    Show this help\n"
+    echo
+
+    # :command.usage_flags
+    # :flag.usage
+    echo "  --watch, -w"
+    printf "    Watch for change and rerun\n"
     echo
 
     # :command.usage_args
@@ -343,38 +366,6 @@ respec_reset_usage() {
   printf "Usage:\n"
   printf "  respec reset\n"
   printf "  respec reset --help | -h\n"
-  echo
-
-  # :command.long_usage
-  if [[ -n $long_usage ]]; then
-    printf "Options:\n"
-
-    # :command.usage_fixed_flags
-    echo "  --help, -h"
-    printf "    Show this help\n"
-    echo
-
-  fi
-}
-
-# :command.usage
-respec_watch_usage() {
-  if [[ -n $long_usage ]]; then
-    printf "respec watch - Run specs marked with :focus when any *.rb file changes\n"
-    echo
-
-  else
-    printf "respec watch - Run specs marked with :focus when any *.rb file changes\n"
-    echo
-
-  fi
-
-  printf "Alias: w\n"
-  echo
-
-  printf "Usage:\n"
-  printf "  respec watch\n"
-  printf "  respec watch --help | -h\n"
   echo
 
   # :command.long_usage
@@ -547,6 +538,11 @@ run_rspec() {
   bundle exec rspec "$@" || bell
 }
 
+# src/lib/run_watch.sh
+run_watch() {
+  filewatcher --immediate '**/*.rb' "clear ; $*"
+}
+
 # src/lib/send_completions.sh
 send_completions() {
   echo $'# respec completion                                        -*- shell-script -*-'
@@ -592,11 +588,11 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    \'except\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'focus\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'fails\'*)'
@@ -607,16 +603,12 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
   echo $'      ;;'
   echo $''
-  echo $'    \'watch\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
-  echo $'      ;;'
-  echo $''
   echo $'    \'only\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'last\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'cont\'*)'
@@ -628,7 +620,7 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    \'ex\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'a\'*)'
@@ -636,15 +628,15 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    \'f\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'o\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'l\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'c\'*)'
@@ -655,12 +647,8 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
   echo $'      ;;'
   echo $''
-  echo $'    \'w\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
-  echo $'      ;;'
-  echo $''
   echo $'    *)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --version -h -v a all c completions cont continue ex except f fails failures focus l last o only r reset w watch")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --version -h -v a all c completions cont continue ex except f fails failures focus l last o only r reset")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'  esac'
@@ -688,8 +676,14 @@ respec_all_command() {
 # :command.function
 respec_focus_command() {
   # src/focus_command.sh
-  banner "focus"
-  run_rspec --tag focus
+  watch="${args[--watch]}"
+
+  if [[ $watch ]]; then
+    run_watch "respec focus"
+  else
+    banner "focus"
+    run_rspec --tag focus
+  fi
 
 }
 
@@ -697,35 +691,52 @@ respec_focus_command() {
 respec_only_command() {
   # src/only_command.sh
   search="${args[search]}"
-  banner "only *$search*"
-  reset_status
+  watch="${args[--watch]}"
 
-  # shellcheck disable=SC2046
-  run_rspec $( (find . -name '*_spec.rb' -path "*$search*" | grep .) || echo "-tnothing")
+  if [[ $watch ]]; then
+    run_watch "respec only $search"
+  else
+    banner "only *$search*"
+    reset_status
 
+    # shellcheck disable=SC2046
+    run_rspec $( (find . -name '*_spec.rb' -path "*$search*" | grep .) || echo "-tnothing")
+  fi
 }
 
 # :command.function
 respec_except_command() {
   # src/except_command.sh
   search="${args[search]}"
-  banner "except *$search*"
-  reset_status
+  watch="${args[--watch]}"
 
-  # shellcheck disable=SC2046
-  run_rspec $( (find . -name '*_spec.rb' -not -path "*$search*" | grep .) || echo "-tnothing")
+  if [[ $watch ]]; then
+    run_watch "respec except $search"
+  else
+    banner "except *$search*"
+    reset_status
 
+    # shellcheck disable=SC2046
+    run_rspec $( (find . -name '*_spec.rb' -not -path "*$search*" | grep .) || echo "-tnothing")
+  fi
 }
 
 # :command.function
 respec_last_command() {
   # src/last_command.sh
   min="${args[min]}"
-  banner "last $min minutes"
-  reset_status
 
-  # shellcheck disable=SC2046
-  run_rspec $( (find . -name '*_spec.rb' -mmin -"$min" | grep .) || echo "-tnothing")
+  watch="${args[--watch]}"
+
+  if [[ $watch ]]; then
+    run_watch "respec last $min"
+  else
+    banner "last $min minutes"
+    reset_status
+
+    # shellcheck disable=SC2046
+    run_rspec $( (find . -name '*_spec.rb' -mmin -"$min" | grep .) || echo "-tnothing")
+  fi
 
 }
 
@@ -755,14 +766,6 @@ respec_reset_command() {
   else
     echo "file not found: $RESPEC_STATUS_FILE"
   fi
-
-}
-
-# :command.function
-respec_watch_command() {
-  # src/watch_command.sh
-  banner "watch *.rb > respec focus"
-  filewatcher '**/*.rb' "clear ; respec focus"
 
 }
 
@@ -804,8 +807,7 @@ parse_requirements() {
   action=${1:-}
 
   case $action in
-    -*)
-      ;;
+    -*) ;;
 
     all | a)
       action="all"
@@ -860,13 +862,6 @@ parse_requirements() {
       action="reset"
       shift
       respec_reset_parse_requirements "$@"
-      shift $#
-      ;;
-
-    watch | w)
-      action="watch"
-      shift
-      respec_watch_parse_requirements "$@"
       shift $#
       ;;
 
@@ -942,6 +937,13 @@ respec_all_parse_requirements() {
     exit 1
   fi
 
+  if ! command -v filewatcher >/dev/null 2>&1; then
+    printf "missing dependency: filewatcher\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install with $(magenta gem install filewatcher-cli)\n" >&2
+    exit 1
+  fi
+
   # :command.command_filter
   action="all"
 
@@ -1001,6 +1003,13 @@ respec_focus_parse_requirements() {
     exit 1
   fi
 
+  if ! command -v filewatcher >/dev/null 2>&1; then
+    printf "missing dependency: filewatcher\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install with $(magenta gem install filewatcher-cli)\n" >&2
+    exit 1
+  fi
+
   # :command.command_filter
   action="focus"
 
@@ -1008,6 +1017,13 @@ respec_focus_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
+      # :flag.case
+      --watch | -w)
+
+        # :flag.case_no_arg
+        args[--watch]=1
+        shift
+        ;;
 
       -?*)
         printf "invalid option: %s\n" "$key" >&2
@@ -1060,6 +1076,13 @@ respec_only_parse_requirements() {
     exit 1
   fi
 
+  if ! command -v filewatcher >/dev/null 2>&1; then
+    printf "missing dependency: filewatcher\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install with $(magenta gem install filewatcher-cli)\n" >&2
+    exit 1
+  fi
+
   # :command.command_filter
   action="only"
 
@@ -1067,6 +1090,13 @@ respec_only_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
+      # :flag.case
+      --watch | -w)
+
+        # :flag.case_no_arg
+        args[--watch]=1
+        shift
+        ;;
 
       -?*)
         printf "invalid option: %s\n" "$key" >&2
@@ -1092,7 +1122,7 @@ respec_only_parse_requirements() {
 
   # :command.required_args_filter
   if [[ -z ${args[search]+x} ]]; then
-    printf "missing required argument: SEARCH\nusage: respec only SEARCH\n" >&2
+    printf "missing required argument: SEARCH\nusage: respec only SEARCH [OPTIONS]\n" >&2
     exit 1
   fi
 
@@ -1131,6 +1161,13 @@ respec_except_parse_requirements() {
     exit 1
   fi
 
+  if ! command -v filewatcher >/dev/null 2>&1; then
+    printf "missing dependency: filewatcher\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install with $(magenta gem install filewatcher-cli)\n" >&2
+    exit 1
+  fi
+
   # :command.command_filter
   action="except"
 
@@ -1138,6 +1175,13 @@ respec_except_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
+      # :flag.case
+      --watch | -w)
+
+        # :flag.case_no_arg
+        args[--watch]=1
+        shift
+        ;;
 
       -?*)
         printf "invalid option: %s\n" "$key" >&2
@@ -1163,7 +1207,7 @@ respec_except_parse_requirements() {
 
   # :command.required_args_filter
   if [[ -z ${args[search]+x} ]]; then
-    printf "missing required argument: SEARCH\nusage: respec except SEARCH\n" >&2
+    printf "missing required argument: SEARCH\nusage: respec except SEARCH [OPTIONS]\n" >&2
     exit 1
   fi
 
@@ -1202,6 +1246,13 @@ respec_last_parse_requirements() {
     exit 1
   fi
 
+  if ! command -v filewatcher >/dev/null 2>&1; then
+    printf "missing dependency: filewatcher\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install with $(magenta gem install filewatcher-cli)\n" >&2
+    exit 1
+  fi
+
   # :command.command_filter
   action="last"
 
@@ -1209,6 +1260,13 @@ respec_last_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
+      # :flag.case
+      --watch | -w)
+
+        # :flag.case_no_arg
+        args[--watch]=1
+        shift
+        ;;
 
       -?*)
         printf "invalid option: %s\n" "$key" >&2
@@ -1275,6 +1333,13 @@ respec_fails_parse_requirements() {
     exit 1
   fi
 
+  if ! command -v filewatcher >/dev/null 2>&1; then
+    printf "missing dependency: filewatcher\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install with $(magenta gem install filewatcher-cli)\n" >&2
+    exit 1
+  fi
+
   # :command.command_filter
   action="fails"
 
@@ -1338,6 +1403,13 @@ respec_continue_parse_requirements() {
     printf "missing dependency: bundler\n" >&2
     # shellcheck disable=SC2059
     printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v filewatcher >/dev/null 2>&1; then
+    printf "missing dependency: filewatcher\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install with $(magenta gem install filewatcher-cli)\n" >&2
     exit 1
   fi
 
@@ -1422,72 +1494,6 @@ respec_reset_parse_requirements() {
     echo "$filter_error" >&2
     exit 1
   fi
-
-}
-
-# :command.parse_requirements
-respec_watch_parse_requirements() {
-  # :command.fixed_flags_filter
-  while [[ $# -gt 0 ]]; do
-    case "${1:-}" in
-      --help | -h)
-        long_usage=yes
-        respec_watch_usage
-        exit
-        ;;
-
-      *)
-        break
-        ;;
-
-    esac
-  done
-
-  # :command.dependencies_filter
-  if ! command -v rspec >/dev/null 2>&1; then
-    printf "missing dependency: rspec\n" >&2
-    # shellcheck disable=SC2059
-    printf "Install using $(magenta gem install rspec)\n" >&2
-    exit 1
-  fi
-
-  if ! command -v bundler >/dev/null 2>&1; then
-    printf "missing dependency: bundler\n" >&2
-    # shellcheck disable=SC2059
-    printf "Install using $(magenta gem install bundler)\n" >&2
-    exit 1
-  fi
-
-  if ! command -v filewatcher >/dev/null 2>&1; then
-    printf "missing dependency: filewatcher\n" >&2
-    # shellcheck disable=SC2059
-    printf "Install with $(magenta gem install filewatcher-cli)\n" >&2
-    exit 1
-  fi
-
-  # :command.command_filter
-  action="watch"
-
-  # :command.parse_requirements_while
-  while [[ $# -gt 0 ]]; do
-    key="$1"
-    case "$key" in
-
-      -?*)
-        printf "invalid option: %s\n" "$key" >&2
-        exit 1
-        ;;
-
-      *)
-        # :command.parse_requirements_case
-        # :command.parse_requirements_case_simple
-        printf "invalid argument: %s\n" "$key" >&2
-        exit 1
-
-        ;;
-
-    esac
-  done
 
 }
 
@@ -1630,15 +1636,6 @@ run() {
       fi
       ;;
 
-    "watch")
-      if [[ ${args[--help]:-} ]]; then
-        long_usage=yes
-        respec_watch_usage
-      else
-        respec_watch_command
-      fi
-      ;;
-
     "completions")
       if [[ ${args[--help]:-} ]]; then
         long_usage=yes
@@ -1646,10 +1643,6 @@ run() {
       else
         respec_completions_command
       fi
-      ;;
-
-    "root")
-      root_command
       ;;
 
   esac
