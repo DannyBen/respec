@@ -1,4 +1,5 @@
 source approvals.bash
+PATH="$PATH:../"
 cli=respec
 
 # Stub some commands:
