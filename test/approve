@@ -3,129 +3,113 @@
 
 # Setup
 cd ./test || exit
-source approvals.bash
-PATH="$PATH:../"
-cli=respec
-
-# Ensure clean stats
-unset RESPEC_HELPER_PATH
-unset RESPEC_STATUS_FILE
-
-# Stub some commands:
-# - rspec and bundler: for CI, since they are not installed there
-# - bundle and filewatcher: to avoid running them
-rspec()       { printf "[stubbed] \$ rspec %s" "$*"; }
-bundler()     { printf "[stubbed] \$ bundler %s" "$*"; }
-bundle()      { printf "[stubbed] \$ bundle %s" "$*"; }
-filewatcher() { printf "[stubbed] \$ filewatcher %s" "$*"; }
-export -f rspec bundle bundler filewatcher
+source test_helper.bash
 
 # Tests
-context "when there are no special environment requirements"
-  describe "root command"
-    approve "$cli --help"
-    approve "$cli"
+describe "respec"
+  approve "$cli --help"
+  approve "$cli"
 
-  describe "all"
-    approve "$cli all"
-    approve "$cli all --help"
+describe "respec all"
+  approve "$cli all"
+  approve "$cli all --help"
 
-  describe "focus"
-    approve "$cli focus"
-    approve "$cli focus --help"
-  
-  describe "fails"
-    approve "$cli fails --help"
+describe "respec focus"
+  approve "$cli focus"
+  approve "$cli focus --help"
 
-  describe "only"
-    approve "$cli only --help"
-    approve "$cli only"
-
-  describe "except"
-    approve "$cli except --help"
-    approve "$cli except"
-
-  describe "last"
-    approve "$cli last --help"
-
-  describe "continue"
-    approve "$cli continue --help"
-
-  describe "reset"
-    approve "$cli reset --help"
-
-
-context "when there is no spec_helper"
-  describe "fails"
+describe "respec fails"
+  approve "$cli fails --help"
+  context "when there is no spec_helper"
     approve "$cli fails" "error_no_helper"
 
-  describe "continue"
-    approve "$cli continue" "error_no_helper"
-
-  describe "reset"
-    approve "$cli reset" "error_no_helper"
-
-
-context "when spec_helper exists but misconfigured"
-  export RESPEC_HELPER_PATH="fixtures/misconfigured_spec_helper.rb"
-  export RESPEC_STATUS_FILE="fixtures/spec/status.txt"
-
-  describe "fails"
+  context "when spec_helper exists but misconfigured"
+    set_bad_helper
     approve "$cli fails" "error_misconfigured_helper"
+    unset_helper
 
-  describe "continue"
-    approve "$cli continue" "error_misconfigured_helper"
-
-  describe "reset"
-    approve "$cli reset" "error_misconfigured_helper"
-
-
-context "with a properly configured environment"
-  export RESPEC_HELPER_PATH="fixtures/spec_helper.rb"
-  export RESPEC_STATUS_FILE="fixtures/spec/status.txt"
-
-  describe "fails"
+  context "with a properly configured environment"
+    set_good_helper
     approve "$cli fails"
     approve "$cli fails -w"
+    unset_helper
 
-  describe "continue"
-    approve "$cli continue"
-    approve "$cli continue -w"
+describe "respec only"
+  approve "$cli only --help"
+  approve "$cli only"
 
-  describe "reset"
-    touch "fixtures/spec/status.txt"
-    approve "$cli reset"
-    if [[ -f "fixtures/spec/status.txt" ]]; then
-      fail "expected fixtures/spec/status.txt to be gone"
-    fi
-
-  describe "only"
+  context "with a properly configured environment"
+    set_good_helper
     approve "$cli only con"
     approve "$cli only con -w"
     approve "$cli only no-such-files"
+    unset_helper
 
-  describe "except"
+describe "respec except"
+  approve "$cli except --help"
+  approve "$cli except"
+
+  context "with a properly configured environment"
+    set_good_helper
     approve "$cli except con"
     approve "$cli except con -w"
     [[ -z $CI ]] && approve "$cli except no-such-file" "respec_except_no_such_file"
     # sort since the output is different in CI
     # this is a repeat of the previous test
     approve "$cli except no-such-file | xargs -n1 | sort | xargs" "respec_except_no_such_file_ci"
+    unset_helper
 
-  describe "last"
+describe "respec last"
+  approve "$cli last --help"
+
+  context "with a properly configured environment"
+    set_good_helper
     approve "$cli last 10 -w"
+    unset_helper
 
-context "when there are no specs recently modified"
-  describe "last"
+  context "when there are no specs recently modified"
     # this touch does not work on vagrant, it is here for CI only
     touch -d "2 hours ago" fixtures/spec/*.rb
     approve "$cli last 1" "respec_last_no_changes"
     approve "$cli last 1" "respec_last_no_changes"
 
-context "when there are specs recently modified"
-  touch "fixtures/spec/modified_spec.rb"
-  
-  describe "last"
+  context "when there are specs recently modified"
+    touch "fixtures/spec/modified_spec.rb"
     approve "$cli last" "respec_last_changes"
-  
-  rm -f "fixtures/spec/modified_spec.rb"
+    rm -f "fixtures/spec/modified_spec.rb"
+
+describe "respec continue"
+  approve "$cli continue --help"
+  context "when there is no spec_helper"
+    approve "$cli continue" "error_no_helper"
+
+  context "when spec_helper exists but misconfigured"
+    set_bad_helper
+    approve "$cli continue" "error_misconfigured_helper"
+    unset_helper
+
+  context "with a properly configured environment"
+    set_good_helper
+    approve "$cli continue"
+    approve "$cli continue -w"
+    unset_helper
+
+describe "respec reset"
+  approve "$cli reset --help"
+  context "when there is no spec_helper"
+    approve "$cli reset" "error_no_helper"
+
+  context "when spec_helper exists but misconfigured"
+    set_bad_helper
+    approve "$cli reset" "error_misconfigured_helper"
+    unset_helper
+
+  context "with a properly configured environment"
+    set_good_helper
+    touch "fixtures/spec/status.txt"
+    approve "$cli reset"
+    if [[ -f "fixtures/spec/status.txt" ]]; then
+      fail "expected fixtures/spec/status.txt to be gone"
+    fi
+    unset_helper
+
