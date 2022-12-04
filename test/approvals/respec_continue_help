@@ -3,9 +3,12 @@ respec continue - Continue from where the last run stopped
 Alias: c, cont
 
 Usage:
-  respec continue
+  respec continue [OPTIONS]
   respec continue --help | -h
 
 Options:
   --help, -h
     Show this help
+
+  --watch, -w
+    Watch for change and rerun

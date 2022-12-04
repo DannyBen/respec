@@ -3,9 +3,12 @@ respec fails - Run the last failed specs
 Alias: failures
 
 Usage:
-  respec fails
+  respec fails [OPTIONS]
   respec fails --help | -h
 
 Options:
   --help, -h
     Show this help
+
+  --watch, -w
+    Watch for change and rerun

@@ -43,7 +43,7 @@ commands:
   - *watch
 
 - name: except
-  alias: ex
+  alias: e
   help: Run specs and exclude files matching a pattern
   dependencies: *deps
   args:
@@ -70,12 +70,16 @@ commands:
   help: Run the last failed specs
   dependencies: *deps
   filters: [spec_helper_config]
+  flags:
+  - *watch
 
 - name: continue
   alias: [c, cont]
   help: Continue from where the last run stopped
   dependencies: *deps
   filters: [spec_helper_config]
+  flags:
+  - *watch
 
 - name: reset
   alias: r
