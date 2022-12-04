@@ -1,6 +1,6 @@
 respec except - Run specs and exclude files matching a pattern
 
-Alias: ex
+Alias: e
 
 Usage:
   respec except SEARCH [OPTIONS]

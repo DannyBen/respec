@@ -86,9 +86,11 @@ context "with a properly configured environment"
 
   describe "fails"
     approve "$cli fails"
+    approve "$cli fails -w"
 
   describe "continue"
     approve "$cli continue"
+    approve "$cli continue -w"
 
   describe "reset"
     touch "fixtures/spec/status.txt"

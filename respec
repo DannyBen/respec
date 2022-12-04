@@ -203,7 +203,7 @@ respec_except_usage() {
 
   fi
 
-  printf "Alias: ex\n"
+  printf "Alias: e\n"
   echo
 
   printf "Usage:\n"
@@ -300,7 +300,7 @@ respec_fails_usage() {
   echo
 
   printf "Usage:\n"
-  printf "  respec fails\n"
+  printf "  respec fails [OPTIONS]\n"
   printf "  respec fails --help | -h\n"
   echo
 
@@ -311,6 +311,12 @@ respec_fails_usage() {
     # :command.usage_fixed_flags
     echo "  --help, -h"
     printf "    Show this help\n"
+    echo
+
+    # :command.usage_flags
+    # :flag.usage
+    echo "  --watch, -w"
+    printf "    Watch for change and rerun\n"
     echo
 
   fi
@@ -332,7 +338,7 @@ respec_continue_usage() {
   echo
 
   printf "Usage:\n"
-  printf "  respec continue\n"
+  printf "  respec continue [OPTIONS]\n"
   printf "  respec continue --help | -h\n"
   echo
 
@@ -343,6 +349,12 @@ respec_continue_usage() {
     # :command.usage_fixed_flags
     echo "  --help, -h"
     printf "    Show this help\n"
+    echo
+
+    # :command.usage_flags
+    # :flag.usage
+    echo "  --watch, -w"
+    printf "    Watch for change and rerun\n"
     echo
 
   fi
@@ -580,11 +592,11 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    \'failures\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'continue\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'except\'*)'
@@ -596,7 +608,7 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    \'fails\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'reset\'*)'
@@ -612,15 +624,11 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    \'cont\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'all\'*)'
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
-  echo $'      ;;'
-  echo $''
-  echo $'    \'ex\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'a\'*)'
@@ -635,12 +643,16 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
+  echo $'    \'e\'*)'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
+  echo $'      ;;'
+  echo $''
   echo $'    \'l\'*)'
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'c\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'r\'*)'
@@ -648,7 +660,7 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    *)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --version -h -v a all c completions cont continue ex except f fails failures focus l last o only r reset")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --version -h -v a all c completions cont continue e except f fails failures focus l last o only r reset")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'  esac'
@@ -743,16 +755,28 @@ respec_last_command() {
 # :command.function
 respec_fails_command() {
   # src/fails_command.sh
-  banner "failed specs"
-  run_rspec --next-failure
+  watch="${args[--watch]}"
+
+  if [[ $watch ]]; then
+    run_watch "respec fails"
+  else
+    banner "failed specs"
+    run_rspec --next-failure
+  fi
 
 }
 
 # :command.function
 respec_continue_command() {
   # src/continue_command.sh
-  banner "continue"
-  run_rspec --tag ~last_run_status:passed
+  watch="${args[--watch]}"
+
+  if [[ $watch ]]; then
+    run_watch "respec continue"
+  else
+    banner "continue"
+    run_rspec --tag ~last_run_status:passed
+  fi
 
 }
 
@@ -830,7 +854,7 @@ parse_requirements() {
       shift $#
       ;;
 
-    except | ex)
+    except | e)
       action="except"
       shift
       respec_except_parse_requirements "$@"
@@ -1347,6 +1371,13 @@ respec_fails_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
+      # :flag.case
+      --watch | -w)
+
+        # :flag.case_no_arg
+        args[--watch]=1
+        shift
+        ;;
 
       -?*)
         printf "invalid option: %s\n" "$key" >&2
@@ -1420,6 +1451,13 @@ respec_continue_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
+      # :flag.case
+      --watch | -w)
+
+        # :flag.case_no_arg
+        args[--watch]=1
+        shift
+        ;;
 
       -?*)
         printf "invalid option: %s\n" "$key" >&2
