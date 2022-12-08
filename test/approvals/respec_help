@@ -13,6 +13,7 @@ Commands:
   last          Run specs on files modified in the last N minutes
   fails         Run the last failed specs
   continue      Continue from where the last run stopped
+  refactor      Shortcut for 'respec last 2 --watch'
   reset         Delete the status file
   completions   Echo completions function
 

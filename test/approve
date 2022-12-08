@@ -40,8 +40,8 @@ describe "respec only"
 
   context "with a properly configured environment"
     set_good_helper
-    approve "$cli only con"
-    approve "$cli only con -w"
+    approve "$cli only conf"
+    approve "$cli only conf -w"
     approve "$cli only no-such-files"
     unset_helper
 
@@ -77,6 +77,10 @@ describe "respec last"
     touch "fixtures/spec/modified_spec.rb"
     approve "$cli last" "respec_last_changes"
     rm -f "fixtures/spec/modified_spec.rb"
+
+describe "respec refactor"
+  approve "$cli refactor --help"
+  approve "$cli refactor"
 
 describe "respec continue"
   approve "$cli continue --help"

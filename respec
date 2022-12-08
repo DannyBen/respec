@@ -41,6 +41,7 @@ respec_usage() {
   echo "  last          Run specs on files modified in the last N minutes"
   echo "  fails         Run the last failed specs"
   echo "  continue      Continue from where the last run stopped"
+  echo "  refactor      Shortcut for 'respec last 2 --watch'"
   echo "  reset         Delete the status file"
   echo "  completions   Echo completions function"
   echo
@@ -361,6 +362,38 @@ respec_continue_usage() {
 }
 
 # :command.usage
+respec_refactor_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "respec refactor - Shortcut for 'respec last 2 --watch'\n"
+    echo
+
+  else
+    printf "respec refactor - Shortcut for 'respec last 2 --watch'\n"
+    echo
+
+  fi
+
+  printf "Alias: r\n"
+  echo
+
+  printf "Usage:\n"
+  printf "  respec refactor\n"
+  printf "  respec refactor --help | -h\n"
+  echo
+
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "Options:\n"
+
+    # :command.usage_fixed_flags
+    echo "  --help, -h"
+    printf "    Show this help\n"
+    echo
+
+  fi
+}
+
+# :command.usage
 respec_reset_usage() {
   if [[ -n $long_usage ]]; then
     printf "respec reset - Delete the status file\n"
@@ -371,9 +404,6 @@ respec_reset_usage() {
     echo
 
   fi
-
-  printf "Alias: r\n"
-  echo
 
   printf "Usage:\n"
   printf "  respec reset\n"
@@ -599,6 +629,10 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
   echo $''
+  echo $'    \'refactor\'*)'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      ;;'
+  echo $''
   echo $'    \'except\'*)'
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --watch -h -w")" -- "$cur" )'
   echo $'      ;;'
@@ -660,7 +694,7 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    *)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --version -h -v a all c completions cont continue e except f fails failures focus l last o only r reset")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_respec_completions_filter "--help --version -h -v a all c completions cont continue e except f fails failures focus l last o only r refactor reset")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'  esac'
@@ -781,6 +815,13 @@ respec_continue_command() {
 }
 
 # :command.function
+respec_refactor_command() {
+  # src/refactor_command.sh
+  run_watch "respec last 2"
+
+}
+
+# :command.function
 respec_reset_command() {
   # src/reset_command.sh
   banner "delete status file"
@@ -882,7 +923,14 @@ parse_requirements() {
       shift $#
       ;;
 
-    reset | r)
+    refactor | r)
+      action="refactor"
+      shift
+      respec_refactor_parse_requirements "$@"
+      shift $#
+      ;;
+
+    reset)
       action="reset"
       shift
       respec_reset_parse_requirements "$@"
@@ -1485,6 +1533,72 @@ respec_continue_parse_requirements() {
 }
 
 # :command.parse_requirements
+respec_refactor_parse_requirements() {
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        respec_refactor_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  # :command.dependencies_filter
+  if ! command -v rspec >/dev/null 2>&1; then
+    printf "missing dependency: rspec\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install rspec)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v bundler >/dev/null 2>&1; then
+    printf "missing dependency: bundler\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install using $(magenta gem install bundler)\n" >&2
+    exit 1
+  fi
+
+  if ! command -v filewatcher >/dev/null 2>&1; then
+    printf "missing dependency: filewatcher\n" >&2
+    # shellcheck disable=SC2059
+    printf "Install with $(magenta gem install filewatcher-cli)\n" >&2
+    exit 1
+  fi
+
+  # :command.command_filter
+  action="refactor"
+
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+}
+
+# :command.parse_requirements
 respec_reset_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
@@ -1662,6 +1776,15 @@ run() {
         respec_continue_usage
       else
         respec_continue_command
+      fi
+      ;;
+
+    "refactor")
+      if [[ ${args[--help]:-} ]]; then
+        long_usage=yes
+        respec_refactor_usage
+      else
+        respec_refactor_command
       fi
       ;;
 
