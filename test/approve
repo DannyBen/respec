@@ -78,6 +78,10 @@ describe "respec last"
     approve "$cli last" "respec_last_changes"
     rm -f "fixtures/spec/modified_spec.rb"
 
+describe "respec refactor"
+  approve "$cli refactor --help"
+  approve "$cli refactor"
+
 describe "respec continue"
   approve "$cli continue --help"
   context "when there is no spec_helper"

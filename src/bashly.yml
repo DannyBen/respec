@@ -81,8 +81,12 @@ commands:
   flags:
   - *watch
 
-- name: reset
+- name: refactor
   alias: r
+  help: Shortcut for 'respec last 2 --watch'
+  dependencies: *deps
+
+- name: reset
   help: Delete the status file
   filters: [spec_helper_config]
 

@@ -1,0 +1,11 @@
+respec refactor - Shortcut for 'respec last 2 --watch'
+
+Alias: r
+
+Usage:
+  respec refactor
+  respec refactor --help | -h
+
+Options:
+  --help, -h
+    Show this help
