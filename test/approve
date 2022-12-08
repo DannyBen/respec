@@ -40,8 +40,8 @@ describe "respec only"
 
   context "with a properly configured environment"
     set_good_helper
-    approve "$cli only con"
-    approve "$cli only con -w"
+    approve "$cli only conf"
+    approve "$cli only conf -w"
     approve "$cli only no-such-files"
     unset_helper
 
