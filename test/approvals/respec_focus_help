@@ -2,13 +2,13 @@ respec focus - Run specs tagged with :focus
 
 Alias: f
 
-Usage:
+[1mUsage:[0m
   respec focus [OPTIONS]
   respec focus --help | -h
 
-Options:
-  --help, -h
-    Show this help
-
+[1mOptions:[0m
   --watch, -w
     Watch for change and rerun
+
+  --help, -h
+    Show this help

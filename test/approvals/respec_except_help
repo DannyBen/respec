@@ -2,17 +2,17 @@ respec except - Run specs and exclude files matching a pattern
 
 Alias: e
 
-Usage:
+[1mUsage:[0m
   respec except SEARCH [OPTIONS]
   respec except --help | -h
 
-Options:
-  --help, -h
-    Show this help
-
+[1mOptions:[0m
   --watch, -w
     Watch for change and rerun
 
-Arguments:
+  --help, -h
+    Show this help
+
+[1mArguments:[0m
   SEARCH
     Partial filename

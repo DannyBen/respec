@@ -1,30 +1,30 @@
 respec - RSpec Convenience Wrapper
 
-Usage:
+[1mUsage:[0m
   respec COMMAND
   respec [COMMAND] --help | -h
   respec --version | -v
 
-Commands:
-  all           Run full specs (default)
-  focus         Run specs tagged with :focus
-  only          Run specs on files matching a pattern
-  except        Run specs and exclude files matching a pattern
-  last          Run specs on files modified in the last N minutes
-  fails         Run the last failed specs
-  continue      Continue from where the last run stopped
-  refactor      Shortcut for 'respec last 2 --watch'
-  reset         Delete the status file
-  completions   Echo completions function
+[1mCommands:[0m
+  [32mall[0m           Run full specs (default)
+  [32mfocus[0m         Run specs tagged with :focus
+  [32monly[0m          Run specs on files matching a pattern
+  [32mexcept[0m        Run specs and exclude files matching a pattern
+  [32mlast[0m          Run specs on files modified in the last N minutes
+  [32mfails[0m         Run the last failed specs
+  [32mcontinue[0m      Continue from where the last run stopped
+  [32mrefactor[0m      Shortcut for 'respec last 2 --watch'
+  [32mreset[0m         Delete the status file
+  [32mcompletions[0m   Echo completions function
 
-Options:
+[1mOptions:[0m
   --help, -h
     Show this help
 
   --version, -v
     Show version number
 
-Environment Variables:
+[1mEnvironment Variables:[0m
   RESPEC_STATUS_FILE
     Where to store the rspec status file
     Default: spec/status.txt

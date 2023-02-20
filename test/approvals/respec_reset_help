@@ -1,9 +1,9 @@
 respec reset - Delete the status file
 
-Usage:
+[1mUsage:[0m
   respec reset
   respec reset --help | -h
 
-Options:
+[1mOptions:[0m
   --help, -h
     Show this help

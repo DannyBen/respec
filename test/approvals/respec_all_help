@@ -2,10 +2,13 @@ respec all - Run full specs
 
 Alias: a
 
-Usage:
-  respec all
+[1mUsage:[0m
+  respec all [OPTIONS]
   respec all --help | -h
 
-Options:
+[1mOptions:[0m
+  --watch, -w
+    Watch for change and rerun
+
   --help, -h
     Show this help

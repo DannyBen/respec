@@ -2,13 +2,13 @@ respec continue - Continue from where the last run stopped
 
 Alias: c, cont
 
-Usage:
+[1mUsage:[0m
   respec continue [OPTIONS]
   respec continue --help | -h
 
-Options:
-  --help, -h
-    Show this help
-
+[1mOptions:[0m
   --watch, -w
     Watch for change and rerun
+
+  --help, -h
+    Show this help
