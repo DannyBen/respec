@@ -1,6 +1,6 @@
 # Respec - RSpec Convenience Wrapper
 
-![Version](https://img.shields.io/badge/version-0.1.4-blue.svg)
+![Version](https://img.shields.io/badge/version-0.1.5-blue.svg)
 [![Test](https://github.com/DannyBen/respec/actions/workflows/test.yml/badge.svg)](https://github.com/DannyBen/respec/actions/workflows/test.yml)
 
 ---
@@ -43,6 +43,7 @@ Commands:
   last          Run specs on files modified in the last N minutes
   fails         Run the last failed specs
   continue      Continue from where the last run stopped
+  refactor      Shortcut for 'respec last 2 --watch'
   reset         Delete the status file
   completions   Echo completions function
 ```
