@@ -1,6 +1,6 @@
 name: respec
 help: RSpec Convenience Wrapper
-version: 0.1.4
+version: 0.1.5
 
 environment_variables:
 - name: respec_status_file
@@ -20,16 +20,18 @@ commands:
     rspec: Install using $(magenta gem install rspec)
     bundler: Install using $(magenta gem install bundler)
     filewatcher: Install with $(magenta gem install filewatcher-cli)
+  flags:
+  - &watch
+    long: --watch
+    short: -w
+    help: Watch for change and rerun
 
 - name: focus
   alias: f
   help: Run specs tagged with :focus
   dependencies: *deps
   flags:
-  - &watch
-    long: --watch
-    short: -w
-    help: Watch for change and rerun
+  - *watch
 
 - name: only
   alias: o

@@ -2,17 +2,17 @@ respec only - Run specs on files matching a pattern
 
 Alias: o
 
-Usage:
+[1mUsage:[0m
   respec only SEARCH [OPTIONS]
   respec only --help | -h
 
-Options:
-  --help, -h
-    Show this help
-
+[1mOptions:[0m
   --watch, -w
     Watch for change and rerun
 
-Arguments:
+  --help, -h
+    Show this help
+
+[1mArguments:[0m
   SEARCH
     Partial filename
