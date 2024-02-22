@@ -11,7 +11,7 @@ jobs:
       LC_ALL: en_US.UTF-8 # consistent sort order
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Run shellcheck tests
       run: shellcheck respec setup
     - name: Install filewatcher dummy
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Run setup
       run: ./setup
     - name: Test setup artifacts
@@ -37,7 +37,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Upgrade the outdated bash
       run: brew install bash
     - name: Run setup
