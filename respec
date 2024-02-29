@@ -1760,7 +1760,7 @@ respec_completions_parse_requirements() {
 
 # :command.initialize
 initialize() {
-  version="0.1.6"
+  version="0.1.7"
   long_usage=''
   set -e
 
