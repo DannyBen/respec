@@ -1,6 +1,5 @@
 # Respec - RSpec Convenience Wrapper
 
-![Version](https://img.shields.io/badge/version-0.1.5-blue.svg)
 [![Test](https://github.com/DannyBen/respec/actions/workflows/test.yml/badge.svg)](https://github.com/DannyBen/respec/actions/workflows/test.yml)
 
 ---
