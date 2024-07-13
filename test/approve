@@ -72,7 +72,6 @@ describe "respec last"
   context "with a properly configured environment"
     set_good_helper
     approve "$cli last 1 --watch"
-    approve "echo q | $cli last 1 --repeat"
     unset_helper
 
   context "when there are no specs recently modified"
@@ -80,6 +79,7 @@ describe "respec last"
     touch -d "2 hours ago" fixtures/spec/*.rb
     approve "$cli last 1" "respec_last_no_changes"
     approve "$cli last 1" "respec_last_no_changes"
+    approve "echo q | $cli last 1 --repeat"
 
   context "when there are specs recently modified"
     touch "fixtures/spec/modified_spec.rb"
