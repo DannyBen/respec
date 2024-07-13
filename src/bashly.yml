@@ -1,6 +1,6 @@
 name: respec
 help: RSpec Convenience Wrapper
-version: 0.1.7
+version: 0.1.8
 
 environment_variables:
 - name: respec_status_file
@@ -15,7 +15,10 @@ commands:
 - name: all
   alias: a
   default: force
-  help: Run full specs
+  help: |-
+    Run full specs
+
+    This is the default command. Running `respec` is the same as `respec all`.
   dependencies: &deps
     rspec: Install using $(magenta gem install rspec)
     bundler: Install using $(magenta gem install bundler)
@@ -25,6 +28,12 @@ commands:
     long: --watch
     short: -w
     help: Watch for change and rerun
+    conflicts: [--repeat]
+  - &repeat
+    long: --repeat
+    short: -r
+    help: Wait for a key press after running and repeat
+    conflicts: [--watch]
 
 - name: focus
   alias: f
@@ -32,6 +41,7 @@ commands:
   dependencies: *deps
   flags:
   - *watch
+  - *repeat
 
 - name: only
   alias: o
@@ -43,6 +53,7 @@ commands:
     required: true
   flags:
   - *watch
+  - *repeat
 
 - name: except
   alias: e
@@ -54,6 +65,7 @@ commands:
     required: true
   flags:
   - *watch
+  - *repeat
 
 - name: last
   alias: l
@@ -66,6 +78,7 @@ commands:
     default: "10"
   flags:
   - *watch
+  - *repeat
 
 - name: fails
   alias: [failures]
@@ -74,6 +87,7 @@ commands:
   filters: [spec_helper_config]
   flags:
   - *watch
+  - *repeat
 
 - name: continue
   alias: [c, cont]
@@ -82,6 +96,7 @@ commands:
   filters: [spec_helper_config]
   flags:
   - *watch
+  - *repeat
 
 - name: refactor
   alias: r

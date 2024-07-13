@@ -1,7 +1,7 @@
 respec - RSpec Convenience Wrapper
 
 [1mUsage:[0m
-  respec COMMAND
+  respec [COMMAND]
   respec [COMMAND] --help | -h
   respec --version | -v
 
