@@ -71,8 +71,8 @@ describe "respec last"
 
   context "with a properly configured environment"
     set_good_helper
-    approve "$cli last 10 --watch"
-    # approve "echo q | $cli last 10 --repeat"
+    approve "$cli last 1 --watch"
+    approve "echo q | $cli last 1 --repeat"
     unset_helper
 
   context "when there are no specs recently modified"
