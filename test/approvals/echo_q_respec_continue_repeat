@@ -1,0 +1,3 @@
+[stubbed] $ clear
+[35mrespec: continue[0m
+[stubbed] $ bundle exec rspec --tag ~last_run_status:passed

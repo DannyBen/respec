@@ -1,0 +1,3 @@
+[stubbed] $ clear
+[35mrespec: only *conf*[0m
+[stubbed] $ bundle exec rspec ./fixtures/spec/config_spec.rb

@@ -11,12 +11,16 @@ describe "respec"
   approve "$cli"
 
 describe "respec all"
-  approve "$cli all"
   approve "$cli all --help"
+  approve "$cli all"
+  approve "$cli all --watch"
+  approve "echo q | $cli all --repeat"
 
 describe "respec focus"
-  approve "$cli focus"
   approve "$cli focus --help"
+  approve "$cli focus"
+  approve "$cli all --watch"
+  approve "echo q | $cli all --repeat"
 
 describe "respec fails"
   approve "$cli fails --help"
@@ -31,7 +35,8 @@ describe "respec fails"
   context "with a properly configured environment"
     set_good_helper
     approve "$cli fails"
-    approve "$cli fails -w"
+    approve "$cli fails --watch"
+    approve "echo q | $cli fails --repeat"
     unset_helper
 
 describe "respec only"
@@ -41,8 +46,9 @@ describe "respec only"
   context "with a properly configured environment"
     set_good_helper
     approve "$cli only conf"
-    approve "$cli only conf -w"
+    approve "$cli only conf --watch"
     approve "$cli only no-such-files"
+    approve "echo q | $cli only conf --repeat"
     unset_helper
 
 describe "respec except"
@@ -52,7 +58,8 @@ describe "respec except"
   context "with a properly configured environment"
     set_good_helper
     approve "$cli except con"
-    approve "$cli except con -w"
+    approve "$cli except con --watch"
+    approve "echo q | $cli except con --repeat"
     [[ -z $CI ]] && approve "$cli except no-such-file" "respec_except_no_such_file"
     # sort since the output is different in CI
     # this is a repeat of the previous test
@@ -64,7 +71,8 @@ describe "respec last"
 
   context "with a properly configured environment"
     set_good_helper
-    approve "$cli last 10 -w"
+    approve "$cli last 10 --watch"
+    approve "echo q | $cli last 10 --repeat"
     unset_helper
 
   context "when there are no specs recently modified"
@@ -95,7 +103,8 @@ describe "respec continue"
   context "with a properly configured environment"
     set_good_helper
     approve "$cli continue"
-    approve "$cli continue -w"
+    approve "$cli continue --watch"
+    approve "echo q | $cli continue --repeat"
     unset_helper
 
 describe "respec reset"

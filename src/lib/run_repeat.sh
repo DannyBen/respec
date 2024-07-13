@@ -1,7 +1,9 @@
 run_repeat() {
+  : ${CLEAR:=clear}
+
   while true; do
     # Run in a clear screen
-    clear
+    $CLEAR
     "$@" || true
     echo
 
