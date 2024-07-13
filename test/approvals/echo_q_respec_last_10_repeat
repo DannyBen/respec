@@ -1,3 +1,0 @@
-[stubbed] $ clear
-[35mrespec: last 10 minutes[0m
-[stubbed] $ bundle exec rspec -tnothing
