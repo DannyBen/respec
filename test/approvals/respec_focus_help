@@ -10,5 +10,8 @@ Alias: f
   --watch, -w
     Watch for change and rerun
 
+  --repeat, -r
+    Wait for a key press after running and repeat
+
   --help, -h
     Show this help

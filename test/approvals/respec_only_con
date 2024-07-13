@@ -1,2 +1,0 @@
-[35mrespec: only *con*[0m
-[stubbed] $ bundle exec rspec ./fixtures/spec/config_spec.rb ./fixtures/spec/content_spec.rb
