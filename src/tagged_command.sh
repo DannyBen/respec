@@ -1,10 +1,10 @@
 watch="${args[--watch]}"
 repeat="${args[--repeat]}"
-tags=(${args[tag]})
+eval "tags=(${args[tag]})"
 
 # Clean up the tags array by replacing \\~ with \~
 for i in "${!tags[@]}"; do
-  tags[$i]=${tags[$i]//\\~/\~}
+  tags[i]="${tags[$i]//\\~/\~}"
 done
 
 # Zip the tags array with --tag prefix for each element
@@ -20,5 +20,5 @@ else
   banner "tagged ${tags[*]}"
   reset_status
 
-  run_rspec ${rspec_args[@]}
+  run_rspec "${rspec_args[@]}"
 fi

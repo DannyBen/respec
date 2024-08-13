@@ -55,11 +55,11 @@ commands:
   - *watch
   - *repeat
   examples: |-
-    $(blue \# run specs only on paths matching \'*integration*\')
-    respec only integration
+    # run specs only on paths matching \'*integration*\'
+      respec only integration
 
 - name: except
-  alias: e
+  alias: [e, ex]
   help: Run specs except files matching a pattern
   dependencies: *deps
   args:
@@ -70,8 +70,8 @@ commands:
   - *watch
   - *repeat
   examples: |-
-    $(blue \# run specs only on paths not matching \'*examples*\')
-    respec except examples
+    # run specs only on paths not matching \'*examples*\'
+    $ respec except examples
 
 - name: tagged
   alias: [t, tag, tags]
@@ -86,8 +86,8 @@ commands:
   - *watch
   - *repeat
   examples: |-
-    $(blue \# run specs tagged :production and not tagged :slow)
-    respec tagged production ~slow
+    # run specs tagged :production and not tagged :slow
+    $ respec tagged production ~slow
 
 - name: last
   alias: l

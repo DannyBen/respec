@@ -189,7 +189,7 @@ respec_only_usage() {
 
     # :command.usage_examples
     printf "%s\n" "$(bold "Examples:")"
-    printf "  $(blue \# run specs only on paths matching \'*integration*\')\n  respec only integration\n"
+    printf "  # run specs only on paths matching \'*integration*\'\n    respec only integration\n"
     echo
 
   fi
@@ -198,7 +198,7 @@ respec_only_usage() {
 # :command.usage
 respec_except_usage() {
   printf "respec except - Run specs except files matching a pattern\n\n"
-  printf "Alias: e\n"
+  printf "Alias: e, ex\n"
   echo
 
   printf "%s\n" "$(bold "Usage:")"
@@ -238,7 +238,7 @@ respec_except_usage() {
 
     # :command.usage_examples
     printf "%s\n" "$(bold "Examples:")"
-    printf "  $(blue \# run specs only on paths not matching \'*examples*\')\n  respec except examples\n"
+    printf "  # run specs only on paths not matching \'*examples*\'\n  $ respec except examples\n"
     echo
 
   fi
@@ -287,7 +287,7 @@ respec_tagged_usage() {
 
     # :command.usage_examples
     printf "%s\n" "$(bold "Examples:")"
-    printf "  $(blue \# run specs tagged :production and not tagged :slow)\n  respec tagged production ~slow\n"
+    printf "  # run specs tagged :production and not tagged :slow\n  $ respec tagged production ~slow\n"
     echo
 
   fi
@@ -884,11 +884,11 @@ respec_tagged_command() {
   # src/tagged_command.sh
   watch="${args[--watch]}"
   repeat="${args[--repeat]}"
-  tags=(${args[tag]})
+  eval "tags=(${args[tag]})"
 
   # Clean up the tags array by replacing \\~ with \~
   for i in "${!tags[@]}"; do
-    tags[$i]=${tags[$i]//\\~/\~}
+    tags[i]="${tags[$i]//\\~/\~}"
   done
 
   # Zip the tags array with --tag prefix for each element
@@ -904,7 +904,7 @@ respec_tagged_command() {
     banner "tagged ${tags[*]}"
     reset_status
 
-    run_rspec ${rspec_args[@]}
+    run_rspec "${rspec_args[@]}"
   fi
 
 }
@@ -1048,7 +1048,7 @@ parse_requirements() {
       shift $#
       ;;
 
-    except | e)
+    except | e | ex)
       action="except"
       shift
       respec_except_parse_requirements "$@"
