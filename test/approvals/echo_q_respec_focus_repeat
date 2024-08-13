@@ -1,0 +1,3 @@
+[stubbed] $ clear
+[35mrespec: focus[0m
+[stubbed] $ bundle exec rspec --tag focus

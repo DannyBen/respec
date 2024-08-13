@@ -30,15 +30,16 @@ Download the [respec](respec) script to `/usr/local/bin/` or anywhere in your
 
 ```
 Usage:
-  respec COMMAND
+  respec [COMMAND]
   respec [COMMAND] --help | -h
   respec --version | -v
 
 Commands:
-  all           Run full specs (default)
+  all           Run all specs (default)
   focus         Run specs tagged with :focus
-  only          Run specs on files matching a pattern
-  except        Run specs and exclude files matching a pattern
+  only          Run specs only on files matching a pattern
+  except        Run specs except files matching a pattern
+  tagged        Run specs that include/exclude certain tags
   last          Run specs on files modified in the last N minutes
   fails         Run the last failed specs
   continue      Continue from where the last run stopped

@@ -56,7 +56,7 @@ commands:
   - *repeat
   examples: |-
     # run specs only on paths matching \'*integration*\'
-      respec only integration
+    $ respec only integration
 
 - name: except
   alias: [e, ex]
@@ -75,7 +75,7 @@ commands:
 
 - name: tagged
   alias: [t, tag, tags]
-  help: Run only specs that include/exclude certain tags
+  help: Run specs that include/exclude certain tags
   dependencies: *deps
   args:
   - name: tag

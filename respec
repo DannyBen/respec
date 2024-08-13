@@ -30,7 +30,7 @@ respec_usage() {
   printf "  %s   Run specs tagged with :focus\n" "$(green "focus")      "
   printf "  %s   Run specs only on files matching a pattern\n" "$(green "only")       "
   printf "  %s   Run specs except files matching a pattern\n" "$(green "except")     "
-  printf "  %s   Run only specs that include/exclude certain tags\n" "$(green "tagged")     "
+  printf "  %s   Run specs that include/exclude certain tags\n" "$(green "tagged")     "
   printf "  %s   Run specs on files modified in the last N minutes\n" "$(green "last")       "
   printf "  %s   Run the last failed specs\n" "$(green "fails")      "
   printf "  %s   Continue from where the last run stopped\n" "$(green "continue")   "
@@ -189,7 +189,7 @@ respec_only_usage() {
 
     # :command.usage_examples
     printf "%s\n" "$(bold "Examples:")"
-    printf "  # run specs only on paths matching \'*integration*\'\n    respec only integration\n"
+    printf "  # run specs only on paths matching \'*integration*\'\n  $ respec only integration\n"
     echo
 
   fi
@@ -246,7 +246,7 @@ respec_except_usage() {
 
 # :command.usage
 respec_tagged_usage() {
-  printf "respec tagged - Run only specs that include/exclude certain tags\n\n"
+  printf "respec tagged - Run specs that include/exclude certain tags\n\n"
   printf "Alias: t, tag, tags\n"
   echo
 
@@ -735,6 +735,10 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_respec_completions_filter "--help --repeat --watch -h -r -w")" -- "$cur")'
   echo $'      ;;'
   echo $''
+  echo $'    \'only\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_respec_completions_filter "--help --repeat --watch -h -r -w")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
   echo $'    \'last\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_respec_completions_filter "--help --repeat --watch -h -r -w")" -- "$cur")'
   echo $'      ;;'
@@ -743,15 +747,15 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_respec_completions_filter "--help --repeat --watch -h -r -w")" -- "$cur")'
   echo $'      ;;'
   echo $''
-  echo $'    \'only\'*)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_respec_completions_filter "--help --repeat --watch -h -r -w")" -- "$cur")'
-  echo $'      ;;'
-  echo $''
   echo $'    \'tag\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_respec_completions_filter "--help --repeat --watch -h -r -w")" -- "$cur")'
   echo $'      ;;'
   echo $''
   echo $'    \'all\'*)'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_respec_completions_filter "--help --repeat --watch -h -r -w")" -- "$cur")'
+  echo $'      ;;'
+  echo $''
+  echo $'    \'ex\'*)'
   echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_respec_completions_filter "--help --repeat --watch -h -r -w")" -- "$cur")'
   echo $'      ;;'
   echo $''
@@ -788,7 +792,7 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    *)'
-  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_respec_completions_filter "--help --version -h -v a all c completions cont continue e except f fails failures focus l last o only r refactor reset t tag tagged tags")" -- "$cur")'
+  echo $'      while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "$(_respec_completions_filter "--help --version -h -v a all c completions cont continue e ex except f fails failures focus l last o only r refactor reset t tag tagged tags")" -- "$cur")'
   echo $'      ;;'
   echo $''
   echo $'  esac'

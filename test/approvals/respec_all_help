@@ -1,8 +1,8 @@
 respec all
 
-  Run full specs
+  Run all specs
   
-  This is the default command. Running `respec` is the same as `respec all`.
+  This is the default command, so running `respec` is the same as `respec all`.
 
 Alias: a
 
@@ -13,9 +13,11 @@ Alias: a
 [1mOptions:[0m
   --watch, -w
     Watch for change and rerun
+    Conflicts: --repeat
 
   --repeat, -r
     Wait for a key press after running and repeat
+    Conflicts: --watch
 
   --help, -h
     Show this help
