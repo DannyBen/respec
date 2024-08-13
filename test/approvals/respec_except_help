@@ -1,6 +1,6 @@
-respec except - Run specs and exclude files matching a pattern
+respec except - Run specs except files matching a pattern
 
-Alias: e
+Alias: e, ex
 
 [1mUsage:[0m
   respec except SEARCH [OPTIONS]
@@ -9,9 +9,11 @@ Alias: e
 [1mOptions:[0m
   --watch, -w
     Watch for change and rerun
+    Conflicts: --repeat
 
   --repeat, -r
     Wait for a key press after running and repeat
+    Conflicts: --watch
 
   --help, -h
     Show this help
@@ -19,3 +21,7 @@ Alias: e
 [1mArguments:[0m
   SEARCH
     Partial filename
+
+[1mExamples:[0m
+  # run specs only on paths not matching '*examples*'
+  $ respec except examples

@@ -19,8 +19,8 @@ describe "respec all"
 describe "respec focus"
   approve "$cli focus --help"
   approve "$cli focus"
-  approve "$cli all --watch"
-  approve "echo q | $cli all --repeat"
+  approve "$cli focus --watch"
+  approve "echo q | $cli focus --repeat"
 
 describe "respec fails"
   approve "$cli fails --help"
@@ -65,6 +65,11 @@ describe "respec except"
     # this is a repeat of the previous test
     approve "$cli except no-such-file | xargs -n1 | sort | xargs" "respec_except_no_such_file_ci"
     unset_helper
+
+describe "respec tagged"
+  approve "$cli tagged --help"
+  approve "$cli tagged ~slow --watch"
+  approve "echo q | $cli tagged ~slow --repeat"
 
 describe "respec last"
   approve "$cli last --help"

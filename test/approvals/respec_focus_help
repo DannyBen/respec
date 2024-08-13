@@ -9,9 +9,11 @@ Alias: f
 [1mOptions:[0m
   --watch, -w
     Watch for change and rerun
+    Conflicts: --repeat
 
   --repeat, -r
     Wait for a key press after running and repeat
+    Conflicts: --watch
 
   --help, -h
     Show this help

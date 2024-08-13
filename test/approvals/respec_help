@@ -6,10 +6,11 @@ respec - RSpec Convenience Wrapper
   respec --version | -v
 
 [1mCommands:[0m
-  [32mall[0m           Run full specs (default)
+  [32mall[0m           Run all specs (default)
   [32mfocus[0m         Run specs tagged with :focus
-  [32monly[0m          Run specs on files matching a pattern
-  [32mexcept[0m        Run specs and exclude files matching a pattern
+  [32monly[0m          Run specs only on files matching a pattern
+  [32mexcept[0m        Run specs except files matching a pattern
+  [32mtagged[0m        Run specs that include/exclude certain tags
   [32mlast[0m          Run specs on files modified in the last N minutes
   [32mfails[0m         Run the last failed specs
   [32mcontinue[0m      Continue from where the last run stopped
