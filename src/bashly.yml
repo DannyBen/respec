@@ -16,9 +16,9 @@ commands:
   alias: a
   default: force
   help: |-
-    Run full specs
+    Run all specs
 
-    This is the default command. Running `respec` is the same as `respec all`.
+    This is the default command, so running `respec` is the same as `respec all`.
   dependencies: &deps
     rspec: Install using $(magenta gem install rspec)
     bundler: Install using $(magenta gem install bundler)
@@ -45,7 +45,7 @@ commands:
 
 - name: only
   alias: o
-  help: Run specs on files matching a pattern
+  help: Run specs only on files matching a pattern
   dependencies: *deps
   args:
   - name: search
@@ -54,10 +54,13 @@ commands:
   flags:
   - *watch
   - *repeat
+  examples: |-
+    $(blue \# run specs only on paths matching \'*integration*\')
+    respec only integration
 
 - name: except
   alias: e
-  help: Run specs and exclude files matching a pattern
+  help: Run specs except files matching a pattern
   dependencies: *deps
   args:
   - name: search
@@ -66,6 +69,25 @@ commands:
   flags:
   - *watch
   - *repeat
+  examples: |-
+    $(blue \# run specs only on paths not matching \'*examples*\')
+    respec except examples
+
+- name: tagged
+  alias: [t, tag, tags]
+  help: Run only specs that include/exclude certain tags
+  dependencies: *deps
+  args:
+  - name: tag
+    help: One or more tag names. Prefix with ~ to negate.
+    required: true
+    repeatable: true
+  flags:
+  - *watch
+  - *repeat
+  examples: |-
+    $(blue \# run specs tagged :production and not tagged :slow)
+    respec tagged production ~slow
 
 - name: last
   alias: l
@@ -81,7 +103,7 @@ commands:
   - *repeat
 
 - name: fails
-  alias: [failures]
+  alias: failures
   help: Run the last failed specs
   dependencies: *deps
   filters: [spec_helper_config]
