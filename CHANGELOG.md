@@ -1,6 +1,13 @@
 Changelog
 ========================================
 
+v0.1.11 - 2024-11-01
+----------------------------------------
+
+- Fix bell on failure [`6254690`](https://github.com/DannyBen/respec/commit/6254690)
+- Compare [`v0.1.10..v0.1.11`](https://github.com/dannyben/respec/compare/v0.1.10..v0.1.11)
+
+
 v0.1.10 - 2024-08-13
 ----------------------------------------
 
