@@ -669,7 +669,6 @@ run_rspec() {
   exit_code=$?
   set -e
 
-  exit_code=$?
   [[ $exit_code -ne 0 ]] && bell
   return $exit_code
 }
@@ -2186,7 +2185,6 @@ run() {
   declare -a other_args=()
   declare -a env_var_names=()
   declare -a input=()
-
   normalize_input "$@"
   parse_requirements "${input[@]}"
 
