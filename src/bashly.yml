@@ -1,6 +1,6 @@
 name: respec
 help: RSpec Convenience Wrapper
-version: 0.1.11
+version: 0.1.12
 
 environment_variables:
 - name: respec_status_file
