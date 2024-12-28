@@ -1,6 +1,13 @@
 Changelog
 ========================================
 
+v0.1.12 - 2024-12-28
+----------------------------------------
+
+- Regenerate with bashly 1.2.7 [`c9dc826`](https://github.com/DannyBen/respec/commit/c9dc826)
+- Compare [`v0.1.11..v0.1.12`](https://github.com/dannyben/respec/compare/v0.1.11..v0.1.12)
+
+
 v0.1.11 - 2024-11-01
 ----------------------------------------
 
