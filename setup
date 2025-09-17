@@ -10,7 +10,7 @@ fi
 echo "=== Saving executable to /usr/local/bin/respec"
 curl_command="curl -s https://raw.githubusercontent.com/DannyBen/respec/master/respec > /usr/local/bin/respec"
 $sudo bash -c "$curl_command"
-$sudo chmod a+x /usr/local/bin/respec
+$sudo chmod 755 /usr/local/bin/respec
 
 # Install completions
 if [[ -d "/usr/share/bash-completion/completions" ]]; then
