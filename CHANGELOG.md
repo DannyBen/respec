@@ -1,6 +1,14 @@
 Changelog
 ========================================
 
+v0.2.0 - 2026-01-10
+----------------------------------------
+
+- Update setup to set 755 on the executable [`f0e2db7`](https://github.com/DannyBen/respec/commit/f0e2db7)
+- Switch from filewatcher to watchly [`4c43818`](https://github.com/DannyBen/respec/commit/4c43818)
+- Compare [`v0.1.12..v0.2.0`](https://github.com/dannyben/respec/compare/v0.1.12..v0.2.0)
+
+
 v0.1.12 - 2024-12-28
 ----------------------------------------
 
