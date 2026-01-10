@@ -2210,7 +2210,7 @@ respec_completions_parse_requirements() {
 
 # :command.initialize
 initialize() {
-  declare -g version="0.1.12"
+  declare -g version="0.2.0"
   set -e
 
   # :command.environment_variables_default
