@@ -22,7 +22,7 @@ commands:
   dependencies: &deps
     rspec: Install using $(magenta gem install rspec)
     bundler: Install using $(magenta gem install bundler)
-    filewatcher: Install with $(magenta gem install filewatcher-cli)
+    watchly: Install with $(magenta gem install watchly-cli)
   flags:
   - &watch
     long: --watch

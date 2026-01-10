@@ -4,13 +4,13 @@ cli=respec
 
 # Stub some commands:
 # - rspec and bundler: for CI, since they are not installed there
-# - bundle and filewatcher: to avoid running them
+# - bundle and watchly: to avoid running them
 # - clear: to avoid clearing the screen on --repeat
 rspec()       { printf "[stubbed] \$ rspec %s" "$*"; }
 bundler()     { printf "[stubbed] \$ bundler %s" "$*"; }
 bundle()      { printf "[stubbed] \$ bundle %s" "$*"; }
-filewatcher() { printf "[stubbed] \$ filewatcher %s" "$*"; }
-export -f rspec bundle bundler filewatcher
+watchly() { printf "[stubbed] \$ watchly %s" "$*"; }
+export -f rspec bundle bundler watchly
 export CLEAR="echo [stubbed] $ clear"
 
 # Functions for before/after

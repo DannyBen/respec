@@ -1,1 +1,1 @@
-[stubbed] $ filewatcher --immediate **/*.rb clear ; respec only conf
+[stubbed] $ watchly --immediate clear ; respec only conf **/*.rb
