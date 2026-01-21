@@ -83,3 +83,16 @@ Put this in the `.rspec` file in your repository.
 --format documentation
 --fail-fast
 ```
+
+## Uninstalling
+
+```shell
+$ curl -Ls get.dannyb.co/respec/uninstall | bash
+```
+
+## Contributing / Support
+
+If you experience any issue, have a question or a suggestion, or if you wish
+to contribute, feel free to [open an issue][issues].
+
+[issues]: https://github.com/DannyBen/respec/issues
