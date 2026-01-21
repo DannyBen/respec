@@ -33,7 +33,7 @@ else
 fi
 
 # Verify
-if type respec > /dev/null; then
+if type respec > /dev/null 2>&1; then
   echo "=== Done. Type 'respec' for more info."
 else
   echo "=== Setup failed."

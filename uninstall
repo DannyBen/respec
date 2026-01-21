@@ -31,7 +31,7 @@ else
 fi
 
 # Verify
-if type respec > /dev/null; then
+if type respec > /dev/null 2>&1; then
   echo "=== Uninstall failed."
   exit 1
 else
