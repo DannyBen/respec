@@ -1,6 +1,6 @@
 # Respec - RSpec Convenience Wrapper
 
-![repocard](repocard.svg)
+![repocard](https://repocard.dannyben.com/svg/respec.svg)
 
 Respec is a bash script convenience interface for Ruby's RSpec.
 
