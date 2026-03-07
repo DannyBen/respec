@@ -1,39 +1,25 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-# Figure out if we need sudo or not
-sudo=''
-if [[ $EUID -ne 0 ]]; then
-  sudo='sudo'
-fi
+# === Setup SSI ===
 
-# Remove executable
-echo "=== Removing executable from /usr/local/bin/respec"
-$sudo rm -f /usr/local/bin/respec
+tmpdir="$(mktemp -d)"
+trap 'rm -rf "$tmpdir"' EXIT
+cd "$tmpdir"
+export PATH="$tmpdir:$PATH"
 
-# Remove completions
-if [[ -d "/usr/share/bash-completion/completions" ]]; then
-  compdir="/usr/share/bash-completion/completions"
-elif [[ -d "/usr/local/etc/bash_completion.d" ]]; then
-  compdir="/usr/local/etc/bash_completion.d"
-elif command -v brew &>/dev/null && [[ -d "$(brew --prefix)/etc/bash_completion.d" ]]; then
-  compdir="$(brew --prefix)/etc/bash_completion.d"
+if command -v wget >/dev/null 2>&1; then
+  wget -q -O ssi https://github.com/DannyBen/ssi/releases/download/v0.1.3/ssi
+elif command -v curl >/dev/null 2>&1; then
+  curl -fSsL https://github.com/DannyBen/ssi/releases/download/v0.1.3/ssi -o ssi
 else
-  compdir=''
-fi
-
-if [[ -n $compdir ]]; then
-  echo "=== Removing autocompletions from $compdir"
-  $sudo rm -f "${compdir}/respec"
-else
-  echo "=== Completion script was not removed"
-  echo "    Remove it manually from your startup script:"
-  echo "    eval \"\$(respec completions)\""
-fi
-
-# Verify
-if type respec > /dev/null 2>&1; then
-  echo "=== Uninstall failed."
+  echo "Error: please install wget or curl, then try again" >&2
   exit 1
-else
-  echo "=== Done."
 fi
+chmod +x ssi
+
+# === Uninstall ===
+
+ssi log info Uninstalling respec
+ssi uninstall bin respec
+ssi uninstall completion respec

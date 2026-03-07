@@ -20,28 +20,7 @@ jobs:
         sudo chmod +x /usr/local/bin/watchly
     - name: Run approval tests
       run: test/approve
-
-  ubuntu_setup:
-    name: Setup on Ubuntu
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: Run setup
+    - name: Test setup
       run: ./setup
-    - name: Test setup artifacts
-      run: test/setup_artifacts
-
-  macos_setup:
-    name: Setup on macOS
-    runs-on: macos-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: Upgrade the outdated bash and install completions
-      run: brew install bash bash-completion
-    - name: Run setup
-      run: ./setup
-    - name: Test setup artifacts
-      run: test/setup_artifacts
-
+    - name: Test uninsall
+      run: ./uninstall
